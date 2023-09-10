@@ -24,7 +24,7 @@ def addLetter(table, posY, posX, letter): #? Меняем значение си�
     return table
 
 
-def Programm():
+def Program():
     word, row = inputData()
     mode = "vert" #! "vert" | "diag" ("vert" - default)
     table = createTable(row)
@@ -54,18 +54,8 @@ def Programm():
                 posX += 1 #? Прыгаем на клетку вправо
                 posY -= 1 #? Прыгаем на клетку наверх
 
-
-
     printTable(table)
 
 
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
-    Programm()
+    Program()
