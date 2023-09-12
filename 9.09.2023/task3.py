@@ -8,12 +8,16 @@ def printTable(table):
     for row in table:
         cnt += 1
         print(row)
+    newString = ''
+    for row in table:
+        newString += "".join(row.split(emptySymbol))
+    print('👇'*len(row), '\n', newString, sep="")
 def createTable(row): #? Создаём таблицу
     table = []
     for _ in range(row):
         table.append(emptySymbol)
     return table
-def addRightCell(table):#Расширяем таблицу вправо
+def addRightCell(table): #? Расширяем таблицу вправо
     tempTable = []
     for row in table:
         row += emptySymbol
@@ -31,9 +35,10 @@ def addLetter(table, posY, posX, letter, mode): #? Меняем значение
     table[posY] = "".join(row)
     return table
 
-def Program(word="Программирование", row=3):
+def Program(word = False, row = 3):
+    if word == False: #? Если пользователь не ввёл данные на вход, то заставить его ввести данные
+        word, row = inputData()
     #? initialization
-    # word, row = inputData()
     mode = "vert" #! "vert" | "diag" ("vert" - default)
     table = createTable(row)
     posX = posY = 0 #? Начальные координаты
@@ -65,21 +70,21 @@ def Program(word="Программирование", row=3):
             else:
                 posX += 1 #? Прыгаем на клетку вправо
                 posY -= 1 #? Прыгаем на клетку наверх
-
     printTable(table)
+
 if __name__ == "__main__":
-    print('*'*10)
+    separate="-"*25
+    print(separate)
     Program("Оптимистичность", 4)
-    print('*'*10)
+    print(separate)
     Program("Программирование", 5)
-    print('*'*10)
+    print(separate)
     Program("Программирование", 6)
-    print('*'*10)
+    print(separate)
     Program("Технологии", 3)
-    print('*'*10)
+    print(separate)
     Program("Математика", 2)
-    print('*'*10)
-    Program("Математика", 1)
-    print('*'*10)
+    print(separate)
     Program("♡"*21, 5)
-    print('*'*10)
+    Program()
+    print(separate)
