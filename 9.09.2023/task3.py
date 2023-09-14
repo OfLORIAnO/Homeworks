@@ -45,6 +45,9 @@ def Program(word = False, row = 3):
     cntY = row #? Счётсик спусков вниз (по posY)
 
     if row <= 1: 
+        if row <= 0:
+            print("Вы чё там, совмеи с ума сошли?")
+            return False
         print(word)
         return 
 
