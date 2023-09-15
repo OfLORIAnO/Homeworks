@@ -30,7 +30,6 @@ def palindrome(num):
     #? Если мы дошли до сюда, значит всё хорошо 😎😎
     return True
 
-
 if __name__ == "__main__":
     print("Тесты 👇")
     print("1:", palindrome(5)) #! True
