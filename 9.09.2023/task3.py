@@ -11,7 +11,7 @@ def printTable(table):
     newString = ''
     for row in table:
         newString += "".join(row.split(emptySymbol))
-    print('👇'*len(row), '\n', newString, sep="")
+    print('👇', '\n', newString, sep="")
 def createTable(row): #? Создаём таблицу
     table = []
     for _ in range(row):
