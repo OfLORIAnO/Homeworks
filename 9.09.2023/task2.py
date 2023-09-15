@@ -27,3 +27,5 @@ if __name__ == "__main__":
     print(reverseNum(12))
     print(reverseNum(123))
     print(reverseNum(-150))
+    print(reverseNum(101))
+    print(reverseNum(-110))
