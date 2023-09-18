@@ -7,7 +7,7 @@ def printTable(table):
     cnt = 0
     for row in table:
         cnt += 1
-        print(row)
+        # print(row)
     newString = ''
     for row in table:
         newString += "".join(row.split(emptySymbol))
@@ -76,18 +76,10 @@ def Program(word = False, row = 3):
     printTable(table)
 
 if __name__ == "__main__":
-    separate="-"*25
-    print(separate)
     Program("Оптимистичность", 4)
-    print(separate)
     Program("Программирование", 5)
-    print(separate)
     Program("Программирование", 6)
-    print(separate)
     Program("Технологии", 3)
-    print(separate)
     Program("Математика", 2)
-    print(separate)
     Program("♡"*21, 5)
     Program()
-    print(separate)

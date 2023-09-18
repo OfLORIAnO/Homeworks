@@ -5,7 +5,6 @@ def getLenOfNum(num):
         num //= 10
     return cnt
 
-
 def palindrome(num):
     if num < 0:
         num = abs(num)
@@ -34,7 +33,6 @@ def palindrome(num):
             return False
     # ? Если мы дошли до сюда, значит всё хорошо 😎😎
     return True
-
 
 if __name__ == "__main__":
     print("Тесты 👇")
