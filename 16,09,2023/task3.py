@@ -27,7 +27,7 @@ def convertStringToArray(str):
     return mass
 
 
-def skob(s):
+def bracket(s):
     mass = convertStringToArray(s)
     l = 0
     r = l + 1
@@ -51,6 +51,6 @@ def skob(s):
 
 
 if __name__ == "__main__":
-    print(skob("{}()[{}]"))
-    print(skob("{}[][][]()()()()()[{}]"))
-    print(skob("{[(]){[()]}}"))
+    print(bracket("{}()[{}]"))
+    print(bracket("{}[][][]()()()()()[{}]"))
+    print(bracket("{[(]){[()]}}"))
