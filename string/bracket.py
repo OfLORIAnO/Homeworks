@@ -1,6 +1,3 @@
-from task1 import task1
-
-
 def copyElemInNewArray(array):
     newArr = []
     for e in array:
