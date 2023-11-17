@@ -1,4 +1,4 @@
-from task1 import getLenOfNum
+from palindrome import getLenOfNum
 
 def reverseNum(num):
     isNegative = False
