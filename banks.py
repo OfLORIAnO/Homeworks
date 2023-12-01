@@ -16,7 +16,7 @@ def banks1():
   for i in range(n):
     name = input("Введите название банка: ") 
     money = int(input("Введите деньги банка: "))
-    banksList.append(tuple(name,money))
+    banksList.append(tuple([name,money]))
 
   # banksList = [("bank1", 1),("bank2", 2),("bank3", 3),("bank4", 4),("bank5", 5),("bank6", 6),("bank7", 7),("bank8", 8)]
   # banksList = [("sber1", 100),("Tin1", 5),("Vol1", 4),("Ker1", 150),("Tin2", 3),("Vol2", 10)]
@@ -46,7 +46,7 @@ def banks2():
   for i in range(n):
     name = input("Введите название банка: ") 
     money = int(input("Введите деньги банка: "))
-    banksList.append(tuple(name,money))
+    banksList.append(tuple([name,money]))
   
   if len(banksList) == 2:
     if banksList[0][1] > banksList[1][1]:
