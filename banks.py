@@ -1,5 +1,5 @@
 from itertools import product
-from datetime import datetime
+
 def getMaxRoute(l):
   max = l[0]
   for i in range(1,len(l)):
@@ -9,7 +9,6 @@ def getMaxRoute(l):
   return max
 
 def banks1():
-  now = int(datetime.now().timestamp() * 1000)
   banksList = []
 
   n = int(input("Введите кол-во банков:"))
@@ -36,7 +35,7 @@ def banks1():
         totalSum += banksList[j][1]
         route.append(tuple([banksList[j][0], j+1]))
     vhodAfter.append([totalSum, route])
-  print(getMaxRoute(vhodAfter),now - int(datetime.now().timestamp() * 1000))
+  print(getMaxRoute(vhodAfter))
 
 
 def banks2():
