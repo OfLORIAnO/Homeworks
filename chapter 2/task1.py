@@ -12,7 +12,7 @@ def task1() -> str:
             tempString = char
             charsWas = []
         charsWas.append(char)
-    maxLenWord = ""
+    maxLenWord: str = ""
     for i in range(len(listOfSubs)):
         if len(maxLenWord) <= len(listOfSubs[i]):
             maxLenWord = listOfSubs[i]
