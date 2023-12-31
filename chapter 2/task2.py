@@ -1,6 +1,6 @@
-def reverseWords(s):
-    tempString = ""
-    l = 0
+def reverseWords(s: str) -> str:
+    tempString: str = ""
+    l: int = 0
     for i in range(0, len(s)):
         if s[i] == " ":
             tempString = s[l:i] + " " + tempString
@@ -10,23 +10,22 @@ def reverseWords(s):
     return tempString
 
 
-def deleteSpaces(s):
-    tempString = ""
+def deleteSpaces(s: str) -> str:
+    tempString: str = ""
 
     for i in range(len(s) - 1):
         if s[i] == " " and s[i + 1] == " ":
             continue
         else:
             tempString = tempString + s[i]
+    print(tempString)
     return tempString
 
 
-def convert(s):
-    return  deleteSpaces(reverseWords(s.strip().lower())).capitalize()
+def convert() -> str:
+    s: str = input()
+    return deleteSpaces(reverseWords(s.strip().lower())).capitalize()
 
 
 if __name__ == "__main__":
-    print(convert("      мИр приВет        "))
-    print(convert("      мИр приВет страус      "))
-    print(convert("      it    was     cool      "))
-    print(convert("good"))
+    convert()

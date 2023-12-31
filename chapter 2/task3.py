@@ -1,12 +1,15 @@
-def copyElemInNewArray(array):
-    newArr = []
+from typing import Union
+
+
+def copyElemInNewArray(array: list[str]) -> list[str]:
+    newArr: list[str] = []
     for e in array:
         newArr.append(e)
     return newArr
 
 
-def deleteFromArray(array, leftInd, rigthInd):
-    newArr = array
+def deleteFromArray(array: list[str], leftInd: int, rigthInd: int):
+    newArr: list[str] = array
     for i in range(len(array)):
         if i == leftInd:
             newArr[i] = ""
@@ -15,21 +18,22 @@ def deleteFromArray(array, leftInd, rigthInd):
     return newArr
 
 
-def getPair(lElem, rElem):
-    coop = ["()", "{}", "[]"]
+def getPair(lElem: str, rElem: str) -> bool:
+    coop: list[str] = ["()", "{}", "[]"]
     for el in coop:
         if el[0] == lElem and el[1] == rElem:
             return True
+    return False
 
 
-def convertStringToArray(str):
-    mass = []
-    for elem in str:
+def convertStringToArray(string: str) -> list[str]:
+    mass: list[str] = []
+    for elem in string:
         mass.append(elem)
     return mass
 
 
-def isEmpty(array):
+def isEmpty(array: list[str]) -> bool:
     cnt = 0
     for i in range(len(array)):
         if array[i] == "":
@@ -37,15 +41,15 @@ def isEmpty(array):
     return cnt == len(array)
 
 
-def checkUncorrect(array, mass):
-    newMass = [" "] * (len(mass) + 1)
+def checkUncorrect(array: list[str], mass: list[str]) -> Union[str, bool]:
+    newMass: list[str] = [" "] * (len(mass) + 1)
     for i in range(len(array)):
         if array[i] == "":
             newMass[i] = mass[i]
         else:
             newMass[i] = " "
     newMass = "".join(newMass).split()
-    tempString = ""
+    tempString: str = ""
     for elem in newMass:
         if len(elem) >= len(tempString):
             tempString = elem
@@ -55,13 +59,15 @@ def checkUncorrect(array, mass):
         return False
 
 
-def bracket(s): #! Основная функция
-    mass = convertStringToArray(s)
-    l, r, flag = 0, 1, False
-    newArr = copyElemInNewArray(mass)
+def bracket(s: str):  #! Основная функция
+    mass: list[str] = convertStringToArray(s)
+    l: int = 0
+    r: int = 1
+    flag: bool = False
+    newArr: list[str] = copyElemInNewArray(mass)
     while not (isEmpty(newArr)):  # ? Пока в списке есть скобки
-        lElem = newArr[l]
-        rElem = newArr[r]
+        lElem: str = newArr[l]
+        rElem: str = newArr[r]
         if getPair(lElem, rElem):  # ? Если есть пара
             newArr = deleteFromArray(newArr, l, r)
             flag = True
