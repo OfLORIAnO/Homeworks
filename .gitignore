@@ -1,6 +1,12 @@
+#? 
 /*/**.xlsx
 /*/**.png
+*.docx
+
+#? 
 /*/__pycache__
 .vscode
 *.js
-index.py
+
+#? Tests
+/*/*.test.py
