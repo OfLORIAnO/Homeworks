@@ -10,9 +10,7 @@ from my_types import (
 
 
 def output_data(list1: num_arr_type) -> str:
-    return final_return(
-        *choose(*recursion_func(list1, ["+"]), *recursion_func(list1, ["-"])),
-    )
+    return final_return(*recursion_func(list1, []))
 
 
 # ? Рекурсивная функция
@@ -20,7 +18,6 @@ def recursion_func(
     num_arr: num_arr_type,  # ? Список всех чисел
     operaions_before: operaions_before_type,  # ? Список знаков
 ) -> recursion_return_type:
-
     # ? Если все знаки уже расставлены
     if len(operaions_before) == len(num_arr) - 2:
         # ? Если выражение равно ожидаемому
