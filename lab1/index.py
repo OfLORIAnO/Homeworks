@@ -12,7 +12,9 @@ operactionType = Literal["+", "-", "init", "end", "no solution"]
 
 def output_data(list1: num_arrType) -> str:
     expression_equals: int = int(list1[len(list1) - 1])
-    numArr, operationArr, _ = recursion_func(file, [])
+    numArr, operationArr, operaction = recursion_func(file, [])
+    if operaction == "no solution":
+        return "no solution"
     return final_return(numArr, operationArr, str(expression_equals))
 
 
@@ -29,9 +31,9 @@ def recursion_func(
         arr1, operaions_before1, operation1 = recursion_func(num_arr, ["+"], "+")
         arr2, operaions_before2, operation2 = recursion_func(num_arr, ["-"], "-")
         if operation1 == "end":
-            return (arr1, operaions_before1, operation1)
+            return (arr1, operaions_before1, "end")
         elif operation2 == "end":
-            return (arr2, operaions_before2, operation2)
+            return (arr2, operaions_before2, "end")
         else:
             return (arr2, operaions_before2, "no solution")
 
@@ -69,5 +71,5 @@ if __name__ == "__main__":
     path: str = f"lab1/{fileName}"
 
     file: list[str] = open(path).readline().split()
-
+    file = file[1 : len(file)]
     print(output_data(file))
