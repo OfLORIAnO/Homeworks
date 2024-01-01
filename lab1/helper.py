@@ -17,20 +17,20 @@ def get_expression(numArr: num_arr_type, operationArr: operaions_before_type):
 
 
 # ? Вычисление выражения
-def get_evel(numArr: num_arr_type, operationArr: operaions_before_type) -> int:
-    return eval(get_expression(numArr, operationArr))
+def get_evel(numArr: num_arr_type, operation_arr: operaions_before_type) -> int:
+    return eval(get_expression(numArr, operation_arr))
 
 
 # ? Функция финального вывода
 def final_return(
     numArr: num_arr_type,
-    operationArr: operaions_before_type,
+    operation_arr: operaions_before_type,
     operaction: operaction_type,
     expression_equals: str,
 ) -> str:
     if operaction == "no solution":
         return "no solution"
-    return get_expression(numArr, operationArr) + "=" + expression_equals
+    return get_expression(numArr, operation_arr) + "=" + expression_equals
     
 
 
