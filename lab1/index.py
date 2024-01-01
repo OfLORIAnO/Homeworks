@@ -26,8 +26,9 @@ def recursion_func(
     # ? Если Все знаки уже расставлены
     if len(operaions_before) == len(num_arr) - 2:
         # ? То, чему должно быть равно выражение
-        totalAns = get_evel(num_arr, operaions_before)
-        if expression_equals == totalAns:  # ? Если выражение равно ожидаемому
+        if expression_equals == get_evel(
+            num_arr, operaions_before
+        ):  # ? Если выражение равно ожидаемому
             return (num_arr, operaions_before, "end")
         # ? Если выражение не равно ожидаемому, значит оно нам не подходит
         return ([], [], "no solution")
