@@ -1,51 +1,48 @@
-from typing import Union, Literal
-
-from myTypes import num_arrType, operaions_before_type, operaction_type
-
-
-def get_evel(numArr: list[str], operationArr: list[str]) -> Union[int, False]:
-    try:
-        s: str = ""
-        for i in range(len(operationArr)):
-            s += numArr[i]
-            s += operationArr[i]
-        s += numArr[i + 1]
-        return eval(s)
-    except:
-        return False
+# ? Импорт типов
+from myTypes import (
+    num_arr_type,
+    operaions_before_type,
+    operaction_type,
+    recursion_return_type,
+)
 
 
-def get_num(num: str) -> str:
-    if int(num) < 0:
-        return f" ({num}) "
-    else:
-        return num
+# ? Получение выражения
+def get_expression(numArr: num_arr_type, operationArr: operaions_before_type):
+    s: str = ""
+    for i in range(len(operationArr)):
+        s += numArr[i]
+        s += operationArr[i]
+    return s + numArr[i + 1]
 
 
+# ? Вычисление выражения
+def get_evel(numArr: num_arr_type, operationArr: operaions_before_type) -> int:
+    return eval(get_expression(numArr, operationArr))
+
+
+# ? Функция финального вывода
 def final_return(
-    numArr: list[str],
-    operationArr: list[str],
+    numArr: num_arr_type,
+    operationArr: operaions_before_type,
     operaction: operaction_type,
-    expressionEquals: str,
+    expression_equals: str,
 ) -> str:
     if operaction == "no solution":
         return "no solution"
-    s: str = ""
-    for i in range(len(operationArr)):
-        s += get_num(numArr[i])
-        s += f" {operationArr[i]} "
-    s += get_num(numArr[i + 1]) + " = " + expressionEquals
-    return s
+    return get_expression(numArr, operationArr) + "=" + expression_equals
+    
 
 
+# ? Функция выбора варианта
 def choose(
-    num_arr_1: num_arrType,
+    num_arr_1: num_arr_type,
     operaions_before_1: operaions_before_type,
     operation_1: operaction_type,
-    num_arr_2: num_arrType,
+    num_arr_2: num_arr_type,
     operaions_before_2: operaions_before_type,
     operation_2: operaction_type,
-) -> tuple[num_arrType, operaions_before_type, operaction_type]:
+) -> recursion_return_type:
     if operation_1 == "end":
         return (num_arr_1, operaions_before_1, "end")
     elif operation_2 == "end":
