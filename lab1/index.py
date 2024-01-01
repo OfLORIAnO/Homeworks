@@ -1,7 +1,7 @@
 from typing import Literal
 
 # ? Imports helper module
-from helper import get_evel, final_return
+from helper import get_evel, final_return, choose
 
 
 # ? Types
@@ -29,23 +29,20 @@ def recursion_func(
     if operation == "init":
         arr1, operaions_before1, operation1 = recursion_func(num_arr, ["+"], "+")
         arr2, operaions_before2, operation2 = recursion_func(num_arr, ["-"], "-")
-        if operation1 == "end":
-            return (arr1, operaions_before1, "end")
-        elif operation2 == "end":
-            return (arr2, operaions_before2, "end")
-        return (arr2, operaions_before2, "no solution")
+        return choose(
+            arr1, operaions_before1, operation1, arr2, operaions_before2, operation2
+        )
 
     # ? Если Все знаки уже расставлены
     if len(operaions_before) == len(num_arr) - 2:
         # ? То, чему должно быть равно выражение
-        if get_evel(
-            num_arr, operaions_before
-        ) != False and expression_equals == get_evel(
-            num_arr, operaions_before
+        totalAns = get_evel(num_arr, operaions_before)
+        if (
+            totalAns != False and expression_equals == totalAns
         ):  # ? Если выражение равно ожидаемому
             return (num_arr, operaions_before, "end")
         # ? Если выражение не равно ожидаемому, значит оно нам не подходит
-        return (num_arr, operaions_before, "no solution")
+        return ([], [], "no solution")
 
     # ? Продолжаем перебирать
     else:
@@ -55,17 +52,12 @@ def recursion_func(
         arr2, operaions_before2, operation2 = recursion_func(
             num_arr, operaions_before + ["-"], "-"
         )
-        if operation1 == "end":
-            return (arr1, operaions_before1, "end")
-        elif operation2 == "end":
-            return (arr2, operaions_before2, "end")
-        return (["_"] * 10, [], "no solution")
+        return choose(
+            arr1, operaions_before1, operation1, arr2, operaions_before2, operation2
+        )
 
 
 if __name__ == "__main__":
-    fileName: str = "nums.txt"
-    path: str = f"lab1/{fileName}"
-
-    file: list[str] = open(path).readline().split()
+    file: list[str] = open("lab1/nums.txt").readline().split()
     file = file[1 : len(file)]
     print(output_data(file))

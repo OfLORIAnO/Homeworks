@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Literal
 
 
 def get_evel(numArr: list[str], operationArr: list[str]) -> Union[int, False]:
@@ -29,3 +29,23 @@ def final_return(
         s += f" {operationArr[i]} "
     s += get_num(numArr[i + 1]) + " = " + expressionEquals
     return s
+
+
+num_arrType = list[str]
+operaions_before_type = list[str]
+operactionType = Literal["+", "-", "init", "end", "no solution"]
+
+
+def choose(
+    num_arr_1: num_arrType,
+    operaions_before_1: operaions_before_type,
+    operation_1: operactionType,
+    num_arr_2: num_arrType,
+    operaions_before_2: operaions_before_type,
+    operation_2: operactionType,
+):
+    if operation_1 == "end":
+        return (num_arr_1, operaions_before_1, "end")
+    elif operation_2 == "end":
+        return (num_arr_2, operaions_before_2, "end")
+    return ([], [], "no solution")
