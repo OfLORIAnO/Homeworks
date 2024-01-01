@@ -2,7 +2,7 @@
 from helper import get_evel, final_return, choose
 
 # ? Импорт типов
-from myTypes import (
+from my_types import (
     num_arr_type,
     operaions_before_type,
     recursion_return_type,
@@ -12,7 +12,6 @@ from myTypes import (
 def output_data(list1: num_arr_type) -> str:
     return final_return(
         *choose(*recursion_func(list1, ["+"]), *recursion_func(list1, ["-"])),
-        list1[len(list1) - 1],
     )
 
 
@@ -23,12 +22,10 @@ def recursion_func(
 ) -> recursion_return_type:
     expression_equals: int = int(num_arr[len(num_arr) - 1])
 
-    # ? Если Все знаки уже расставлены
+    # ? Если все знаки уже расставлены
     if len(operaions_before) == len(num_arr) - 2:
-        # ? То, чему должно быть равно выражение
-        if expression_equals == get_evel(
-            num_arr, operaions_before
-        ):  # ? Если выражение равно ожидаемому
+        # ? Если выражение равно ожидаемому
+        if expression_equals == get_evel(num_arr, operaions_before):
             return (num_arr, operaions_before, "end")
         # ? Если выражение не равно ожидаемому, значит оно нам не подходит
         return ([], [], "no solution")

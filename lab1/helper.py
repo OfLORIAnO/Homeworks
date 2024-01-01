@@ -1,5 +1,5 @@
 # ? Импорт типов
-from myTypes import (
+from my_types import (
     num_arr_type,
     operaions_before_type,
     operaction_type,
@@ -23,15 +23,13 @@ def get_evel(numArr: num_arr_type, operation_arr: operaions_before_type) -> int:
 
 # ? Функция финального вывода
 def final_return(
-    numArr: num_arr_type,
+    num_arr: num_arr_type,
     operation_arr: operaions_before_type,
     operaction: operaction_type,
-    expression_equals: str,
 ) -> str:
     if operaction == "no solution":
         return "no solution"
-    return get_expression(numArr, operation_arr) + "=" + expression_equals
-    
+    return get_expression(num_arr, operation_arr) + "=" + num_arr[len(num_arr) - 1]
 
 
 # ? Функция выбора варианта
