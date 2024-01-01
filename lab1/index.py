@@ -20,12 +20,11 @@ def recursion_func(
     num_arr: num_arr_type,  # ? Список всех чисел
     operaions_before: operaions_before_type,  # ? Список знаков
 ) -> recursion_return_type:
-    expression_equals: int = int(num_arr[len(num_arr) - 1])
 
     # ? Если все знаки уже расставлены
     if len(operaions_before) == len(num_arr) - 2:
         # ? Если выражение равно ожидаемому
-        if expression_equals == get_evel(num_arr, operaions_before):
+        if int(num_arr[len(num_arr) - 1]) == get_evel(num_arr, operaions_before):
             return (num_arr, operaions_before, "end")
         # ? Если выражение не равно ожидаемому, значит оно нам не подходит
         return ([], [], "no solution")
