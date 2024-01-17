@@ -1,13 +1,32 @@
-from typing import Literal
+from typing import Literal, List
 
 
-def rotateMatrix(matrix: list[list[int]]) -> None:
-    matrix.reverse()  # ? reverse horiaontal
+def rotateMatrix(matrix: List[List[int]]) -> None:
+    """
+    Поворачивает матрицу
+
+    Args:
+    - matrix (List[List[int]]): Входная матрица.
+
+    Returns:
+    - None
+    """
+    matrix.reverse()  # reverse horizontal
     for i in range(len(matrix)):
-        matrix[i].reverse()  # ? reverse vertical
+        matrix[i].reverse()  # reverse vertical
 
 
-def spiral(matrix: list[list[int]]) -> list[int]:
+def spiral(matrix: List[List[int]]) -> List[int]:
+    """
+    Обходит матрицу по спирали, начиная с левого верхнего угла и двигаясь по часовой стрелке.
+
+    Args:
+    - matrix (List[List[int]]): Входная матрица.
+
+    Returns:
+    - List[int]: Список значений, полученных при обходе матрицы по спирали.
+    """
+
     string = ""
     mode: Literal["hor", "vert"] = "hor"
     while len(matrix):
