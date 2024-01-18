@@ -51,16 +51,14 @@ def put_inaccessible_passages(board: board_type, row: int, col: int) -> None:
             board[row - index][col - index] = SYMBOL_PERMISSIBLE
 
     # ? Ходы Короля
-    for i_row in range(row - 1, row + 2):
-        for i_col in range(col - 1, col + 2):
-            if (
-                i_row >= 0
-                and i_row < len(board)
-                and i_col >= 0
-                and i_col < len(board)
-                and board[i_row][i_col] != SYMBOL_FIGURE
-            ):
-                board[i_row][i_col] = SYMBOL_PERMISSIBLE
+    if 0 <= row - 1 < len(board) and check_is_available(board, row - 1, col):
+        board[row - 1][col] = SYMBOL_PERMISSIBLE
+    if 0 <= row + 1 < len(board) and check_is_available(board, row + 1, col):
+        board[row + 1][col] = SYMBOL_PERMISSIBLE
+    if 0 <= col - 1 < len(board) and check_is_available(board, row, col - 1):
+        board[row][col - 1] = SYMBOL_PERMISSIBLE
+    if 0 <= col + 1 < len(board) and check_is_available(board, row, col + 1):
+        board[row][col + 1] = SYMBOL_PERMISSIBLE
 
 
 # ? Размещаем фигуры
