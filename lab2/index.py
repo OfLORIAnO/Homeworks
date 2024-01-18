@@ -18,47 +18,39 @@ SYMBOL_PERMISSIBLE: symbol_type = "*"
 SYMBOL_EMPTY: symbol_type = "0"
 
 
+def put_inaccessible(board: board_type, row: int, col: int) -> bool:
+    # ? Проверяем существует ли клетка
+    if not (0 <= row < len(board) and 0 <= col < len(board)):
+        return False
+    # ? Проверяем не занята ли клетка
+    if board[row][col] != SYMBOL_FIGURE:
+        board[row][col] = SYMBOL_PERMISSIBLE
+        return True
+    return False
+
+
 def put_inaccessible_passages(board: board_type, row: int, col: int) -> None:
     # ? Размещение недоступных клеток
 
-    # ? Ходы слона
-    for index in range(len(board)):
-        if (
-            row < len(board)
-            and row + index < len(board)
-            and col + index < len(board)
-            and board[row + index][col + index] != SYMBOL_FIGURE
-        ):
-            board[row + index][col + index] = SYMBOL_PERMISSIBLE
-        if (
-            row < len(board)
-            and col + index < len(board)
-            and row - index >= 0
-            and board[row - index][col + index] != SYMBOL_FIGURE
-        ):
-            board[row - index][col + index] = SYMBOL_PERMISSIBLE
-        if (
-            col - index >= 0
-            and row + index < len(board)
-            and board[row + index][col - index] != SYMBOL_FIGURE
-        ):
-            board[row + index][col - index] = SYMBOL_PERMISSIBLE
-        if (
-            row - index >= 0
-            and col - index >= 0
-            and board[row - index][col - index] != SYMBOL_FIGURE
-        ):
-            board[row - index][col - index] = SYMBOL_PERMISSIBLE
+    # ? Флаги нужны, чтоб не повторять выходы за пределы доски
+    flag1, flag2, flag3, flag4 = True, True, True, True
 
-    # ? Ходы Короля
-    if 0 <= row - 1 < len(board) and check_is_available(board, row - 1, col):
-        board[row - 1][col] = SYMBOL_PERMISSIBLE
-    if 0 <= row + 1 < len(board) and check_is_available(board, row + 1, col):
-        board[row + 1][col] = SYMBOL_PERMISSIBLE
-    if 0 <= col - 1 < len(board) and check_is_available(board, row, col - 1):
-        board[row][col - 1] = SYMBOL_PERMISSIBLE
-    if 0 <= col + 1 < len(board) and check_is_available(board, row, col + 1):
-        board[row][col + 1] = SYMBOL_PERMISSIBLE
+    # ? Ходы слона
+    for index in range(1, len(board) - row):
+        if flag1:
+            flag1 = put_inaccessible(board, row + index, col + index)
+        if flag2:
+            flag2 = put_inaccessible(board, row - index, col + index)
+        if flag3:
+            flag3 = put_inaccessible(board, row + index, col - index)
+        if flag4:
+            flag4 = put_inaccessible(board, row - index, col - index)
+
+    # ? Ходы короля минус ходы слона
+    put_inaccessible(board, row - 1, col)
+    put_inaccessible(board, row + 1, col)
+    put_inaccessible(board, row, col - 1)
+    put_inaccessible(board, row, col + 1)
 
 
 # ? Размещаем фигуры
@@ -68,11 +60,6 @@ def put_figure(
     board[row][col] = SYMBOL_FIGURE
     solutions.append((row, col))
     put_inaccessible_passages(board, row, col)
-
-
-# ? Проверка на доступность клетки
-def check_is_available(board: board_type, row: int, col: int) -> bool:
-    return board[row][col] == SYMBOL_EMPTY
 
 
 def solve(
@@ -85,44 +72,47 @@ def solve(
 ) -> None:
     # ? Рекурсивный алгоритм
 
-    # ? Если расставили все фигуры
-    if L == 0:
-        totalSolutions.append(solutions)
-        return
-
     # ? Перебираем возможные ходы с текущей точки
     while True:
         col += 1
-        if col == len(
+
+        if col >= len(
             board
         ):  # ? Если дошли до конца строки -> переходимируем на следующую строку
             col = 0
             row += 1
 
-        if row == len(board):  # ? Если дошли до конца таблицы -> выходим
+        if row >= len(board):  # ? Если дошли до конца таблицы -> выходим
             break
 
-        if check_is_available(
-            board, row, col
-        ):  # ? Если клетка доступна для хода -> ходим
+        if board[row][col] == SYMBOL_EMPTY:  # ? Если клетка доступна для хода -> ходим
             # ? Пересоздаём данные в новые переменные
-            current_board: Any = array(board)
+            current_board: board_type = array(board)
             current_solutions: solutions_type = copy.deepcopy(solutions)
 
-            # ? Размещаем фигуру
+            # ? Ставим фигуру
             put_figure(current_board, row, col, current_solutions)
+
+            # ?  Проверяем была ли эта фигура последней
+            if L - 1 == 0:
+                totalSolutions.append(current_solutions)
+                continue
+
+            # ? Размещаем фигуру
             solve(
                 current_board,
                 row,
-                col,
+                col + 1,  # ? Cледующая клетка не может быть доступной -> пропускаем её
                 L - 1,
                 current_solutions,
                 totalSolutions,
             )
 
 
+# ? Вывод решений в файл
 def print_solutions(solutions: total_solutions_type, t1) -> None:
     # ? Вывод решений в файл
+
     with open("lab2/output.txt", "w") as output_file:
         output_file.seek(0)  # ? Очищаем файл
         if not len(solutions):
@@ -130,38 +120,40 @@ def print_solutions(solutions: total_solutions_type, t1) -> None:
         else:
             for solution in solutions:
                 output_file.write(" ".join([str(elem) for elem in solution]) + "\n")
-    print(time() - t1)
-    print(len(solutions))
+
+    # ? Вывод количества решений
+    print("Количество решений:", len(solutions))
+    # ? Вывод времени работы программы
+    print("Время работы:", time() - t1)
 
 
+# ? Основная функция
 def main() -> None:
+    # ? Время начала работы
     t1 = time()
+
+    solutions: solutions_type = []
+    totalSolutions: total_solutions_type = []
+
     # ? Чтение входных данных из файла
     with open("lab2/input.txt", "r") as input_file:
         N: int
         L: int
         K: int
-
         N, L, K = map(int, input_file.readline().split())
 
-        # ? Добавляем существующие фигуры
-        existing_figures: existing_figures_type = []
+        # ? Создаём доску и заполняем клетки пустотой
+        board: board_type = array([[SYMBOL_EMPTY] * N for _ in range(N)])
+
+        # ? Добавляем существующие фигуры на доску
         for _ in range(K):
             row, col = map(int, input_file.readline().split())
-            existing_figures.append((row, col))
+            put_figure(board, row, col, solutions)
 
-    # ? Создание доски и размещение уже существующих фигур
-    board: board_type = array([[SYMBOL_EMPTY] * N for _ in range(N)])
-
-    # ? Создаём список решений
-    solutions: solutions_type = []
-    totalSolutions: total_solutions_type = []
-
-    for figure in existing_figures:
-        put_figure(board, figure[0], figure[1], solutions)
-
-    # ? Решение
+    # ? Запускаем шарманку
     solve(board, 0, 0, L, solutions, totalSolutions)
+
+    # ? Выводим решения
     print_solutions(totalSolutions, t1)
 
 
