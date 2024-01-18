@@ -1,4 +1,7 @@
-from copy import deepcopy
+from typing import Any
+from numpy import array
+from time import time
+import copy
 
 # ? Импорт типов
 from my_types import (
@@ -84,17 +87,9 @@ def solve(
 ) -> None:
     # ? Рекурсивный алгоритм
 
-    # ? Пересоздаём данные в новые переменные
-    current_board: board_type = deepcopy(board)
-    current_solutions: solutions_type = deepcopy(solutions)
-
-    # ? Размещаем фигуру
-    if check_is_available(current_board, row, col):
-        put_figure(current_board, row, col, current_solutions)
-
     # ? Если расставили все фигуры
     if L == 0:
-        totalSolutions.append(current_solutions)
+        totalSolutions.append(solutions)
         return
 
     # ? Перебираем возможные ходы с текущей точки
@@ -110,8 +105,14 @@ def solve(
             break
 
         if check_is_available(
-            current_board, row, col
+            board, row, col
         ):  # ? Если клетка доступна для хода -> ходим
+            # ? Пересоздаём данные в новые переменные
+            current_board: Any = array(board)
+            current_solutions: solutions_type = copy.deepcopy(solutions)
+
+            # ? Размещаем фигуру
+            put_figure(current_board, row, col, current_solutions)
             solve(
                 current_board,
                 row,
@@ -122,7 +123,7 @@ def solve(
             )
 
 
-def print_solutions(solutions: total_solutions_type) -> None:
+def print_solutions(solutions: total_solutions_type, t1) -> None:
     # ? Вывод решений в файл
     with open("lab2/output.txt", "w") as output_file:
         output_file.seek(0)  # ? Очищаем файл
@@ -131,9 +132,12 @@ def print_solutions(solutions: total_solutions_type) -> None:
         else:
             for solution in solutions:
                 output_file.write(" ".join([str(elem) for elem in solution]) + "\n")
+    print(time() - t1)
+    print(len(solutions))
 
 
 def main() -> None:
+    t1 = time()
     # ? Чтение входных данных из файла
     with open("lab2/input.txt", "r") as input_file:
         N: int
@@ -149,7 +153,7 @@ def main() -> None:
             existing_figures.append((row, col))
 
     # ? Создание доски и размещение уже существующих фигур
-    board: board_type = [[SYMBOL_EMPTY] * N for _ in range(N)]
+    board: board_type = array([[SYMBOL_EMPTY] * N for _ in range(N)])
 
     # ? Создаём список решений
     solutions: solutions_type = []
@@ -157,9 +161,10 @@ def main() -> None:
 
     for figure in existing_figures:
         put_figure(board, figure[0], figure[1], solutions)
+
     # ? Решение
     solve(board, 0, 0, L, solutions, totalSolutions)
-    print_solutions(totalSolutions)
+    print_solutions(totalSolutions, t1)
 
 
 if __name__ == "__main__":
