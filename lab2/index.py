@@ -1,4 +1,3 @@
-from typing import Any
 from numpy import array
 from time import time
 import copy
@@ -161,6 +160,8 @@ def main() -> None:
 
     # ? Если нужно поставить 0 фигур -> выходим
     if L == 0:
+        if not (len(solutions) == 0):
+            totalSolutions.append(solutions)
         return print_solutions(totalSolutions, init_time)
 
     # ? Запускаем шарманку
