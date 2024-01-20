@@ -26,10 +26,11 @@ def get_pins(pin: str) -> list[str]:
 
     return list(map(lambda x: "".join(x), product(*[nums_dict[sym] for sym in pin])))
 
-# ? Такой вариант тоже неплох
+# ? Во как теперь могу
 get_variants = lambda pin: list(map(lambda x: "".join(x), product(*[nums_dict[sym] for sym in pin])))
 
 
 
 if __name__ == "__main__":
     print(get_variants("11"))
+    print(get_pins("11"))
