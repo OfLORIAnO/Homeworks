@@ -245,6 +245,7 @@ def main() -> None:
     if L == 0:
         if not (len(solutions) == 0):
             totalSolutions.append(solutions)
+        print_board(board)
         return print_solutions(totalSolutions, init_time)
 
     # ? Запускаем шарманку
