@@ -1,3 +1,4 @@
+# ? Импорт пакетов
 from numpy import array
 from time import time
 import copy
@@ -17,17 +18,43 @@ SYMBOL_EMPTY: symbol_type = "0"
 
 
 def put_inaccessible(board: board_type, row: int, col: int, N: int) -> bool:
+    """
+    Помечает клетку на доске как недоступную для хода.
+
+    Параметры:
+    - board: Двумерный массив (доска), на которой производится маркировка клетки.
+    - row: Номер строки клетки.
+    - col: Номер столбца клетки.
+    - N: Размерность доски (количество строк и столбцов).
+
+    Возвращает:
+    - bool: True, если клетка была успешно помечена, False в противном случае.
+    """
+
     # ? Проверяем существует ли клетка
     if not (0 <= row < N and 0 <= col < N):
         # ? Проверяем не занята ли клетка
         return False
-    if board[row][col] != SYMBOL_FIGURE:
+    if board[row][col] != SYMBOL_FIGURE:  # ? Проверяем нет ли на клетке фигуры
         board[row][col] = SYMBOL_PERMISSIBLE
         return True
     return False
 
 
 def put_inaccessible_passages(board: board_type, row: int, col: int, N: int) -> None:
+    """
+    Размещает недоступные клетки на доске для ходов слона и короля.
+
+    Параметры:
+    - board: Двумерный массив (доска), на которой производится маркировка клеток.
+    - row: Номер строки клетки.
+    - col: Номер столбца клетки.
+    - N: Размерность доски (количество строк и столбцов).
+
+    Возвращает:
+    - None
+    """
+
     # ? Размещение недоступных клеток
 
     # ? Флаги нужны, чтоб не повторять выходы за пределы доски
@@ -55,6 +82,20 @@ def put_inaccessible_passages(board: board_type, row: int, col: int, N: int) -> 
 def put_figure(
     board: board_type, N: int, row: int, col: int, solutions: solutions_type
 ) -> None:
+    """
+    Размещает фигуру на доске и обновляет информацию о решении.
+
+    Параметры:
+    - board: Двумерный массив (доска), на которой производится размещение фигуры.
+    - N: Размерность доски (количество строк и столбцов).
+    - row: Номер строки клетки, на которой размещается фигура.
+    - col: Номер столбца клетки, на которой размещается фигура.
+    - solutions: Список расстонов в текущей ветке рекурсии.
+
+    Возвращает:
+    - None
+    """
+
     board[row][col] = SYMBOL_FIGURE
     solutions.append((row, col))
     put_inaccessible_passages(board, row, col, N)
@@ -69,10 +110,25 @@ def solve(
     solutions: solutions_type,
     totalSolutions: total_solutions_type,
 ) -> None:
-    # ? Рекурсивный алгоритм
+    """
+    Рекурсивно находит все возможные расстановки фигур на доске.
+
+    Параметры:
+    - board: Двумерный массив (доска), на которой производится размещение фигур.
+    - row: Номер текущей строки на доске.
+    - col: Номер текущего столбца на доске.
+    - L: Количество оставшихся фигур для размещения.
+    - N: Размерность доски (количество строк и столбцов).
+    - solutions: Список расстонов в текущей ветке рекурсии.
+    - totalSolutions: Список с общими решениями.
+
+    Возвращает:
+    - None
+    """
 
     # ? Перебираем возможные ходы с текущей точки
     while True:
+        # ? Идём на следующую клетку
         col += 1
 
         if (
@@ -98,7 +154,7 @@ def solve(
                     print_board(current_board)
                 continue
 
-            # ? Размещаем фигуру
+            # ? Продолжаем крутить шарманку
             solve(
                 current_board,
                 row,
@@ -112,7 +168,16 @@ def solve(
 
 # ? Вывод решений в файл
 def print_solutions(solutions: total_solutions_type, init_time) -> None:
-    # ? Вывод решений в файл
+    """
+    Выводит решения в файл, количество решений и время работы программы.
+
+    Параметры:
+    - solutions: Список расстонов в текущей ветке рекурсии.
+    - init_time: Время начала выполнения программы.
+
+    Возвращает:
+    - None
+    """
 
     with open("lab2/output.txt", "w") as output_file:
         output_file.seek(0)  # ? Очищаем файл
@@ -128,13 +193,30 @@ def print_solutions(solutions: total_solutions_type, init_time) -> None:
     print("Время работы:", time() - init_time)
 
 
+# ? Вывод доски
 def print_board(board: board_type) -> None:
+    """
+    Выводит шахматную доску в консоль.
+
+    Параметры:
+    - board: Двумерный массив (доска), который нужно вывести.
+
+    Возвращает:
+    - None
+    """
     for row in board:
         print(" ".join(row))
 
 
 # ? Основная функция
 def main() -> None:
+    """
+    Основная функция программы.
+
+    Возвращает:
+    - None
+    """
+
     # ? Время начала работы
     init_time = time()
 
@@ -156,6 +238,7 @@ def main() -> None:
         for _ in range(K):
             row, col = map(int, input_file.readline().split())
             put_figure(board, N, row, col, solutions)
+
     print("Размер доски:", N, "Фигур стоит:", K, "Нужно разместить фигур:", L)
 
     # ? Если нужно поставить 0 фигур -> выходим
