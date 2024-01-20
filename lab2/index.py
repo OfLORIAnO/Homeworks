@@ -95,6 +95,8 @@ def solve(
             # ?  Проверяем была ли эта фигура последней
             if L - 1 == 0:
                 totalSolutions.append(current_solutions)
+                if len(totalSolutions) == 1:
+                    print_board(current_board)
                 continue
 
             # ? Размещаем фигуру
@@ -156,8 +158,11 @@ def main() -> None:
             row, col = map(int, input_file.readline().split())
             put_figure(board, N, row, col, solutions)
     print("Размер доски:", N, "Фигур стоит:", K, "Нужно разместить фигур:", L)
-    print("Доска:")
-    print_board(board)
+
+    # ? Если нужно поставить 0 фигур -> выходим
+    if L == 0:
+        return print_solutions(totalSolutions, init_time)
+
     # ? Запускаем шарманку
     solve(board, 0, 0, L, N, solutions, totalSolutions)
 
