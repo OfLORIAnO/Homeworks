@@ -213,7 +213,7 @@ def print_board(board: board_type) -> None:
             elif elem == SYMBOL_EMPTY[0]:
                 s += " " + SYMBOL_EMPTY[1]
             else:  # ? Недоступная клетка
-                s += " " + SYMBOL_PERMISSIBLE[1] 
+                s += " " + SYMBOL_PERMISSIBLE[1]
         print(s)
 
 
@@ -266,3 +266,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
