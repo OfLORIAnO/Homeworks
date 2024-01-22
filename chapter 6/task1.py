@@ -6,6 +6,16 @@ elemsDict: dict[tuple, str] = {
 
 
 def getElemdict(n: int) -> str:
+    """
+    Возвращает слово "элемент" в нужной форме в зависимости от числа.
+
+    Args:
+    n: Число для определения формы слова "элемент".
+
+    Return:
+    str: Слово "элемент" в нужной форме.
+    """
+
     for key, value in elemsDict.items():
         if n in key:
             return value
@@ -14,10 +24,30 @@ def getElemdict(n: int) -> str:
 
 
 def getList(list_input: list[int]) -> str:
+    """
+    Возвращает строку с элементами списка, разделенными запятой.
+
+    Args:
+    list_input (List[int]): Список целых чисел.
+
+    Return:
+    str: Строка с элементами списка, разделенными запятой.
+    """
     return ", ".join(list(map(str, list_input)))
 
 
 def output_data(list1: list[int], list2: list[int]) -> None:
+    """
+    Выводит информацию о списках.
+
+    Args:
+    list1 (List[int]): Первый список чисел.
+    list2 (List[int]): Второй список чисел.
+
+    Return:
+    None
+    """
+
     notUnique_Data: list[int] = sorted([x for x in list1 if x in list2])
 
     unique_data: list[int] = sorted(

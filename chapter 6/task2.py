@@ -2,8 +2,16 @@ from typing import Any
 from itertools import permutations
 
 
-
 def getVariants(arr: list[Any]) -> None:
+    """
+    Выводит все возможные подмножества уникальных перестановок элементов списка.
+
+    Args:
+    arr (List[Any]): Список элементов.
+
+    Return:
+    None
+    """
     s: list = list()
     for i in range(1, len(arr) + 1):
         for d in permutations(arr, i):
