@@ -144,8 +144,6 @@ if __name__ == "__main__":
     slider_t = Slider(slider_ax_t, "Время - t", 0, 2 * np.pi, valinit=0, valstep=0.01)
     slider_t.on_changed(update_point_data)
 
-    # ? Инициализация слайдера угла
-
     # ? Инициализация сброс
     reset_button_ax = plt.axes([0.8, 0.1, 0.1, 0.04])
     reset_button = Button(reset_button_ax, "Сброс")
