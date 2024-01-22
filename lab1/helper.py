@@ -38,7 +38,16 @@ def get_evel(numArr: num_arr_type, operation_arr: operations_before_type) -> int
     Returns:
     - int: Значение выражения.
     """
-    return eval(get_expression(numArr, operation_arr))
+    total_sum: int = 0
+    for i in range(len(numArr)- 1):
+        if i == 0:
+            total_sum = int(numArr[i])
+        else:
+            if operation_arr[i - 1] == "+":
+                total_sum += int(numArr[i])
+            else:
+                total_sum -= int(numArr[i])
+    return total_sum
 
 
 # ? Функция финального вывода
