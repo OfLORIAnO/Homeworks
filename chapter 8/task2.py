@@ -150,14 +150,14 @@ if __name__ == "__main__":
     reset_button.on_clicked(reset_point)
 
     # ? Инициализация флага вкл\выкл касательной
-    tangent_checkbox_ax = plt.axes([0.8, 0.025, 0.1, 0.04])
+    tangent_checkbox_ax = plt.axes([0.8, 0.025, 0.15, 0.04])
     tangent_checkbox = CheckButtons(
         tangent_checkbox_ax, ["Касательная"], actives=[False]
     )
 
     # # ? Инициализация радиокнопоки цвета и стиля линий
     tangent_checkbox.on_clicked(toggle_tangent)
-    radio_buttons_ax_color = plt.axes([0.8, 0.2, 0.1, 0.15])
+    radio_buttons_ax_color = plt.axes([0.6, 0.1, 0.3, 0.15])
     radio_buttons_color = RadioButtons(radio_buttons_ax_color, list(styles))
     radio_buttons_color.on_clicked(change_line_style)
 
