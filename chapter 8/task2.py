@@ -14,6 +14,16 @@ colors = {"Красный": "red", "Синий": "blue", "Зеленый": "gree
 styles = {"Сплошная": "-", "Пунктир": "--", "Штрихпунктир": "-."}
 
 
+def tangent_line_coefficients(a, b, delta, t):
+    # Вычисление углового коэффициента касательной в точке (x, y)
+    x, y = lissajous(a, b, delta, t)
+    dx_dt = a * np.cos(a * t + delta)
+    dy_dt = b * np.cos(b * t)
+    slope = dy_dt / dx_dt
+    intercept = y - slope * x
+    return slope, intercept
+
+
 def update_graph(val):
     global point, tangent_line
     t = slider_t.val
@@ -22,7 +32,10 @@ def update_graph(val):
     point.set_data(x, y)
 
     if show_tangent:
-        tangent_line.set_data([0, x], [0, y])
+        slope, intercept = tangent_line_coefficients(a, b, delta, t)
+        tangent_line.set_data(
+            [x - 1, x + 1], [slope * (x - 1) + intercept, slope * (x + 1) + intercept]
+        )
     else:
         tangent_line.set_data([], [])
 
@@ -76,12 +89,12 @@ tangent_checkbox_ax = plt.axes([0.8, 0.025, 0.1, 0.04])
 tangent_checkbox = CheckButtons(tangent_checkbox_ax, ["Касательная"], actives=[False])
 tangent_checkbox.on_clicked(toggle_tangent)
 
-# ? Радиокнопки на изменение цвета линии
+# Радиокнопки на изменение цвета линии
 radio_buttons_ax_color = plt.axes([0.8, 0.2, 0.1, 0.15])
 radio_buttons_color = RadioButtons(radio_buttons_ax_color, list(colors.keys()))
 radio_buttons_color.on_clicked(change_line_color)
 
-# ? Радиокнопки на изменение стиля линии
+# Радиокнопки на изменение стиля линии
 radio_buttons_ax_style = plt.axes([0.8, 0.35, 0.1, 0.15])
 radio_buttons_style = RadioButtons(radio_buttons_ax_style, list(styles.keys()))
 radio_buttons_style.on_clicked(change_line_style)
