@@ -258,7 +258,7 @@ def main() -> None:
         return print_solutions(totalSolutions, init_time)
 
     # ? Запускаем шарманку
-    solve(board, 0, 0, L, N, solutions, totalSolutions)
+    solve(board, 0, -1, L, N, solutions, totalSolutions)
 
     # ? Выводим решения
     print_solutions(totalSolutions, init_time)

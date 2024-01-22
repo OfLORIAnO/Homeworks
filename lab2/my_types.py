@@ -1,4 +1,4 @@
-from typing import Tuple, Literal
+from typing import Tuple, List
 from numpy import ndarray
 
 # ? Создаём типы
