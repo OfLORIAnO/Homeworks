@@ -12,9 +12,9 @@ from my_types import (
 )
 
 # ? Константы
-SYMBOL_FIGURE: symbol_type = "#"
-SYMBOL_PERMISSIBLE: symbol_type = "*"
-SYMBOL_EMPTY: symbol_type = "0"
+SYMBOL_FIGURE: symbol_type = [1, "#"]
+SYMBOL_PERMISSIBLE: symbol_type = [2, "*"]
+SYMBOL_EMPTY: symbol_type = [0, "0"]
 
 
 def put_inaccessible(board: board_type, row: int, col: int, N: int) -> bool:
@@ -30,13 +30,12 @@ def put_inaccessible(board: board_type, row: int, col: int, N: int) -> bool:
     Возвращает:
     - bool: True, если клетка была успешно помечена, False в противном случае.
     """
-
     # ? Проверяем существует ли клетка
     if not (0 <= row < N and 0 <= col < N):
         # ? Проверяем не занята ли клетка
         return False
-    if board[row][col] != SYMBOL_FIGURE:  # ? Проверяем нет ли на клетке фигуры
-        board[row][col] = SYMBOL_PERMISSIBLE
+    if board[row][col] != SYMBOL_FIGURE[0]:  # ? Проверяем нет ли на клетке фигуры
+        board[row][col] = SYMBOL_PERMISSIBLE[0]
         return True
     return False
 
@@ -96,7 +95,7 @@ def put_figure(
     - None
     """
 
-    board[row][col] = SYMBOL_FIGURE
+    board[row][col] = SYMBOL_FIGURE[0]
     solutions.append((row, col))
     put_inaccessible_passages(board, row, col, N)
 
@@ -140,7 +139,9 @@ def solve(
         if row >= N:  # ? Если дошли до конца таблицы -> выходим
             break
 
-        if board[row][col] == SYMBOL_EMPTY:  # ? Если клетка доступна для хода -> ходим
+        if (
+            board[row][col] == SYMBOL_EMPTY[0]
+        ):  # ? Если клетка доступна для хода -> ходим
             # ? Пересоздаём данные в новые переменные
             current_board: board_type = array(board)
             current_solutions: solutions_type = copy.deepcopy(solutions)
@@ -205,7 +206,15 @@ def print_board(board: board_type) -> None:
     - None
     """
     for row in board:
-        print(" ".join(row))
+        s: str = ""
+        for elem in row:
+            if elem == SYMBOL_FIGURE[0]:
+                s += " " + SYMBOL_FIGURE[1]
+            elif elem == SYMBOL_EMPTY[0]:
+                s += " " + SYMBOL_EMPTY[1]
+            else:  # ? Недоступная клетка
+                s += " " + SYMBOL_PERMISSIBLE[1] 
+        print(s)
 
 
 # ? Основная функция
@@ -232,7 +241,7 @@ def main() -> None:
         N, L, K = map(int, input_file.readline().split())
 
         # ? Создаём доску и заполняем клетки пустотой
-        board: board_type = array([[SYMBOL_EMPTY] * N for _ in range(N)])
+        board: board_type = array([[SYMBOL_EMPTY[0]] * N for _ in range(N)])
 
         # ? Добавляем существующие фигуры на доску
         for _ in range(K):

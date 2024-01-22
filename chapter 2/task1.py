@@ -1,12 +1,14 @@
+from typing import Tuple, List
+
 def task1() -> str:
     # Получаем строку от пользователя
     s: str = input()
     
     # Список для хранения подстрок
-    listOfSubs: list[str] = []
+    listOfSubs: List[str] = []
     
     # Список для отслеживания уникальных символов в текущей подстроке
-    charsWas: list[str] = []
+    charsWas: List[str] = []
     
     # Временная строка для построения текущей подстроки без повторных символов
     tempString: str = ""
