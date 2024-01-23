@@ -48,15 +48,18 @@ def output_data(list1: list[int], list2: list[int]) -> None:
     None
     """
 
-    notUnique_Data: list[int] = sorted([x for x in list1 if x in list2])
+    set_li1 = set(list1)
+    set_li2 = set(list2)
 
-    unique_data: list[int] = sorted(
-        [x for x in list1 if x not in list2] + [x for x in list2 if x not in list1]
-    )
+    notUnique_Data: list[int] = list(set_li1 & set_li2)
+    notUnique_Data.sort()
 
-    l1_minus_l2 = list(set(list1) - set(list2))
+    unique_data: list[int] = list(set_li1 ^ set_li2)
+    unique_data.sort()
 
-    l2_minus_l1 = list(set(list2) - set(list1))
+    l1_minus_l2 = list(set_li1 - set_li2)
+
+    l2_minus_l1 = list(set_li2 - set_li1)
 
     print(
         f"1) {len(notUnique_Data)} {getElemdict(len(notUnique_Data))}: {getList(notUnique_Data)}"

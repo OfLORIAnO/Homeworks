@@ -1,4 +1,3 @@
-from itertools import combinations
 from typing import Union, List, Tuple
 
 
@@ -11,35 +10,45 @@ def getMinDifferent() -> Union[Tuple[List[int], int], None]:
                                            либо None, если введено недостаточное количество элементов в списке.
     """
 
-    # ? Количество элементов в комбинации
-    lenSequence: int = 4
-
     # ? Список для хранения введенных чисел
     b: List[int] = []
 
-    # ? Ввод количества элементов в списке
-    N: int = int(input("Введите количество элементов в списке: "))
-
-    # ? Ввод целочисленного списка
+    N: int = int(input("Введите количество элементов в списке(>4): "))
+    if N < 4:
+        return None
     for _ in range(N):
         b.append(int(input("Введите элемент списка: ")))
 
-    # ? Ввод цели
     C = int(input("Введите цель: "))
+    
+    if N == 4:
+        return (b, C - sum(b))
 
-    # ? Инициализация переменных для хранения минимальной суммы и соответствующей комбинации
-    minList: List[int] = []
-    minNum: float = float("-inf")
+    b.sort()
 
-    # ? Перебираем все комбинации из lenSequence элементов
-    for elem in combinations(b, lenSequence):
-        # ? Если текущая комбинация ближе к цели, обновляем значения
-        if abs(sum(elem) - C) < abs(minNum - C):
-            minNum = sum(elem)
-            minList = list(elem)
+    metaData: Tuple[List[int], int] = (b[0:4], C - sum(b[0:4]))
+    print(N, b, C)
+    
+    # ? 2 вложенных цикла + метод двух указателей - O(n^3)
+    
+    for i in range(N - 3):
+        for j in range(i + 1, N - 2):
+            first_sum: int = b[i] + b[j]
+            left, right = j, N - 1
 
-    # ? Возвращаем результат
-    return minList, sum(minList)
+            while left < right:
+                current_sum = b[left] + b[right] + first_sum
+                (_, meta_sum) = metaData
+
+                if abs(current_sum - C) < abs(meta_sum - C):
+                    print(current_sum - C, meta_sum - C)
+                    metaData = ([b[i], b[j], b[left], b[right]], current_sum)
+                if current_sum < C:
+                    left += 1
+                else:
+                    right -= 1
+
+    return (metaData[0], C - metaData[1])
 
 
 if __name__ == "__main__":
