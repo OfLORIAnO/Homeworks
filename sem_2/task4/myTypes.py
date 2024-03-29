@@ -1,0 +1,2 @@
+ipType = int
+dataStringType = str
