@@ -29,8 +29,9 @@ class ChessGUI(QMainWindow):
     def init_render(self):
         for x in range(self.board.N):
             for y in range(self.board.N):
-                cell: Cell = self.board.get_cell(x, y)
-                self.grid_layout.addWidget(cell.button, x, y)
+                cell = self.board.get_cell(x, y)
+                if cell:
+                    self.grid_layout.addWidget(cell.button, x, y)
 
     def render(self):
         for x in range(self.board.N):

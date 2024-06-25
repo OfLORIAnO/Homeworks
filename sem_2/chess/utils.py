@@ -1,5 +1,9 @@
 from enum import Enum
 from color import Color
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from cell import Cell
 
 
 class Click_Type(Enum):
@@ -8,6 +12,7 @@ class Click_Type(Enum):
 
 
 text_styles = "font-size: 20px; font-weight: 700;"
+
 
 def getStyleOfColor(color: Color) -> str:
     if color == Color.black:
@@ -29,8 +34,8 @@ def getInitCellColor(x: int, y: int) -> Color:
 
 
 def getCellColor(x: int, y: int, cell: "Cell") -> Color:
-    if not(cell.is_available):
+    if not (cell.is_available):
         return Color.red
-    if not(cell.figure):
+    if not (cell.figure):
         return getInitCellColor(x, y)
     return Color.green
