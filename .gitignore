@@ -1,0 +1,14 @@
+#? 
+/*/**.xlsx
+/*/**.png
+задачи за 1 семестр.docx
+
+#? 
+# **/__pycache__/
+.vscode
+*.js
+*/output.txt
+*/output.txt
+
+#? Tests
+/*/*.test.py
