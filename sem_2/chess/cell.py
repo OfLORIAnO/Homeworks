@@ -4,6 +4,7 @@ from color import Color
 from utils import getCellColor, getStyleOfColor, Click_Type
 from figure import Figure
 from cell_button import Cell_button
+from dialog import Dialog
 
 if TYPE_CHECKING:
     from board import Board
@@ -13,9 +14,10 @@ class Cell:
     board: "Board"
     figure: Union[Figure, None]
     __is_available: bool
+    __is_solution: bool
     __x: int
     __y: int
-    color: Color
+    __color: Color
     button: Cell_button
 
     def __init__(self, x: int, y: int, board: "Board"):
@@ -23,6 +25,7 @@ class Cell:
         self.__y = y
         self.board = board
         self.__is_available = True
+        self.__is_solution = False
         self.figure = None
 
         self.button = Cell_button(self.on_click)
@@ -30,8 +33,7 @@ class Cell:
         self.Init()
 
     def Init(self):
-
-        self.color = getStyleOfColor(getCellColor(self.__x, self.__y, self))
+        self.__color = getStyleOfColor(getCellColor(self.__x, self.__y, self))
         self.button.setStyleSheet(self.get_color())
         self.render_symbol()
 
@@ -45,7 +47,7 @@ class Cell:
 
     def render_symbol(self):
         if not (self.figure):
-            self.button.setText("0")
+            self.button.setText(" ")
             return
         self.button.setText("X")
 
@@ -55,20 +57,21 @@ class Cell:
         self.render_symbol()
 
     def get_color(self) -> Color:
-        return self.color
+        return self.__color
 
     @property
     def is_available(self) -> bool:
         return self.__is_available
 
     @is_available.setter
-    def is_available(self, state: bool = True):
+    def is_available(self, state: bool = True, is_solution: bool = False):
         self.__is_available = state
+        self.__is_solution = is_solution
         self.render()
 
-    def put_figure(self):
-        if not (self.__is_available) or self.figure:
-            return
+    def put_figure(self, is_solution: bool = False):
+        if not (self.__is_available) or self.figure or is_solution:
+            Dialog("нельзя поместить фигуру", Color.red)
         else:
             self.figure = Figure(self.__x, self.__y, self.board)
 

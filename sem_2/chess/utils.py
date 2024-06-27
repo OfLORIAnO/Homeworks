@@ -23,6 +23,8 @@ def getStyleOfColor(color: Color) -> str:
         return "background-color: green; color: white;" + text_styles
     elif color == Color.red:
         return "background-color: red; color: white;" + text_styles
+    elif color == Color.yellow:
+        return "background-color: yellow; color: black;" + text_styles
 
     return "background-color: white; color: black;" + text_styles
 
@@ -34,6 +36,8 @@ def getInitCellColor(x: int, y: int) -> Color:
 
 
 def getCellColor(x: int, y: int, cell: "Cell") -> Color:
+    if cell.__is_solution:
+        return Color.yellow
     if not (cell.is_available):
         return Color.red
     if not (cell.figure):

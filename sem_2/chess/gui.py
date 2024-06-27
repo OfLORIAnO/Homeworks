@@ -4,19 +4,19 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QGridLayout,
     QWidget,
+    QPushButton,
+    QLineEdit,
 )
-
 from board import Board
-from cell import Cell
 
 
 class ChessGUI(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.board = Board()
-        self.initUI()
+        self.StartUI()
 
-    def initUI(self):
+    def StartUI(self):
+        # ? Layout
         self.setWindowTitle("Chess")
         self.setGeometry(100, 100, 800, 800)
         self.central_widget = QWidget()
@@ -24,7 +24,22 @@ class ChessGUI(QMainWindow):
         self.grid_layout = QGridLayout()
         self.central_widget.setLayout(self.grid_layout)
         self.central_widget.setStyleSheet("background-color: #EEA26E")
+
+        self.board = Board()
         self.init_render()
+
+        # ? кнопка "Найти решения"
+        self.buttonStart = QPushButton("Найти решения")
+        self.buttonStart.setStyleSheet("background-color: green; color: white;")
+        self.buttonStart.clicked.connect(self.board.start_solve)
+        self.grid_layout.addWidget(self.buttonStart, 0, 999)
+
+        # ? Input того, сколько фигур нужно расставить
+        self.L_input = QLineEdit(self)
+        self.L_input.placeholderText = "Количество фигур, необходимое расставить"
+        self.L_input.textChanged.connect(self.board.confirm_L)
+        self.L_input.text = self.board.L
+        self.grid_layout.addWidget(self.L_input, 1, 999)
 
     def init_render(self):
         for x in range(self.board.N):
