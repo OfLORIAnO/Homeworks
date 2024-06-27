@@ -4,24 +4,23 @@ from solution import Solution
 from dialog import Dialog
 from color import Color
 from typing import Union
-from my_types import solutions_type
+from my_types import solutions_type, total_solutions_type
 from PySide6.QtWidgets import (
     QGridLayout,
     QLineEdit,
 )
 from utils import get_number_from_input
-
+import random
 
 Board_type = list[list[Cell]]
-Solutions_type = list[Cell]
+Solutions_type = list[int]
 Total_solutions_type = list[Solutions_type]
 
 
 class Board(QGridLayout):
     N: int
     L: int
-    board: Board_type
-    solutions: Solutions_type
+    total_solutions: Total_solutions_type = list()
 
     def __init__(
         self,
@@ -65,7 +64,6 @@ class Board(QGridLayout):
                     cell.is_clickable = False
 
     def __Init__board(self):
-        self.__total_solutions = []
         self.N = 10
         self.L = 2
         self.board = [[0 for _ in range(self.N)] for __ in range(self.N)]
@@ -77,15 +75,17 @@ class Board(QGridLayout):
     def get_cell(
         self, x: int, y: int, board: Union[Board_type, None] = None
     ) -> Union[Cell, None]:
-        if board is None:
-            board = self.board
+        current_board = board
+        if current_board is None:
+            current_board = self.board
         try:
-            return self.board[x][y]
+            return current_board[x][y]
         except:
-            Dialog(
-                "Вообще не понимаю, как это могло произойти, но клетки не существует",
-                Color.red,
-            )
+            # Dialog(
+            #     "Вообще не понимаю, как это могло произойти, но клетки не существует",
+            #     Color.red,
+            # )
+            print("net")
             return None
 
     def __reset_all_available(self):
@@ -145,16 +145,18 @@ class Board(QGridLayout):
                     init_positions.append([x, y])
         return init_positions
 
+    @staticmethod
+    def pick_one_solution(solutions: total_solutions_type) -> solutions_type:
+        if len(solutions) == 0:
+            return []
+        return random.choice(solutions)
+
     def start_solve(self):
         init_positions = self.__get_init_positions__for_solving()
         solutions = Solution.get_solutions(
             self.N, self.L, len(init_positions), init_positions
         )
-        self.__total_solutions = solutions
-
-        if len(self.__total_solutions) == 0:
-            Dialog("решений не найдено", Color.red)
-            return
+        Board.total_solutions = solutions
 
         self.render()
 

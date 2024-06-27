@@ -60,7 +60,7 @@ def put_inaccessible_passages(board: board_type, row: int, col: int, N: int) -> 
     flag1, flag2, flag3, flag4 = True, True, True, True
 
     # ? Ходы слона
-    for index in range(1, N - row):
+    for index in range(1, N):
         if flag1:
             flag1 = put_inaccessible(board, row + index, col + index, N)
         if flag2:
