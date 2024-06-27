@@ -1,7 +1,9 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING
 
-# from router import Router
-from data import Data
+if TYPE_CHECKING:
+    from router import Router
+    from data import Data
 
 from typing import Union
 from myTypes import ipType
@@ -34,6 +36,7 @@ class Server:
         self.__buffer.append(data.string)
 
     def send_data(self, data: Data):
+        print(data.string)
         if self.__router:
             self.__router.set_buffer(data)
 

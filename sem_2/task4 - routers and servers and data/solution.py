@@ -1,4 +1,13 @@
-from imports import Router, Server, Data
+from typing import TYPE_CHECKING
+from router import Router
+from class_server import Server
+from data import Data
+
+if TYPE_CHECKING:
+    from class_server import Server
+    from router import Router
+    from data import Data
+
 
 router = Router()
 sv_from = Server()

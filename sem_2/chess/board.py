@@ -20,6 +20,7 @@ Total_solutions_type = list[Solutions_type]
 class Board(QGridLayout):
     N: int
     L: int
+    my_positions: solutions_type
     total_solutions: Total_solutions_type = list()
 
     def __init__(
@@ -55,7 +56,6 @@ class Board(QGridLayout):
             x, y = position
             cell = self.get_cell(x, y)
             if cell:
-                cell.is_solution = True
                 cell.put_figure(True)
         for x in range(self.N):
             for y in range(self.N):
@@ -81,11 +81,6 @@ class Board(QGridLayout):
         try:
             return current_board[x][y]
         except:
-            # Dialog(
-            #     "Вообще не понимаю, как это могло произойти, но клетки не существует",
-            #     Color.red,
-            # )
-            print("net")
             return None
 
     def __reset_all_available(self):
@@ -94,7 +89,6 @@ class Board(QGridLayout):
                 cell = self.get_cell(x, y)
                 if cell:
                     cell.is_available = True
-                    cell.is_solution = False
 
     def __put_all_unavailable_cells(self):
         N = self.N
@@ -109,13 +103,7 @@ class Board(QGridLayout):
                         [x, y] = move
                         move_cell = self.get_cell(x, y)
                         if move_cell:
-                            if cell.figure.is_solution:
-                                move_cell.is_available = False
-                                move_cell.is_solution = True
-                            else:
-                                move_cell.is_solution = False
-                                move_cell.is_available = False
-
+                            move_cell.is_available = False
                 else:
                     cell.Init()
 
@@ -149,7 +137,20 @@ class Board(QGridLayout):
     def pick_one_solution(solutions: total_solutions_type) -> solutions_type:
         if len(solutions) == 0:
             return []
-        return random.choice(solutions)
+        positions_without_my = list()
+        for positions in random.choice(solutions):
+            if positions not in Board.my_positions:
+                positions_without_my.append(positions)
+        return positions_without_my
+
+    def put_my_positions(self):
+        my_positions = []
+        for x in range(self.N):
+            for y in range(self.N):
+                cell = self.get_cell(x, y)
+                if cell and cell.figure and not (cell.figure.is_solution):
+                    my_positions.append((x, y))
+        Board.my_positions = my_positions
 
     def start_solve(self):
         init_positions = self.__get_init_positions__for_solving()
@@ -157,8 +158,7 @@ class Board(QGridLayout):
             self.N, self.L, len(init_positions), init_positions
         )
         Board.total_solutions = solutions
-
-        self.render()
+        self.put_my_positions()
 
     def change_L(self, L: str, input: QLineEdit):
         newL = get_number_from_input(L)

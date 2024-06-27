@@ -40,8 +40,6 @@ def getInitCellColor(x: int, y: int) -> Color:
 
 
 def getCellColor(x: int, y: int, cell: "Cell") -> Color:
-    if cell.is_solution and not cell.figure:
-        return Color.purple
     if cell.figure and cell.figure.is_solution:
         return Color.yellow
     if not (cell.is_available):

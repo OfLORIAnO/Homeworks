@@ -1,5 +1,3 @@
-# from __future__ import annotations
-
 from class_server import Server
 from data import Data
 

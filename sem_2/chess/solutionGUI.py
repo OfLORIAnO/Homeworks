@@ -1,5 +1,14 @@
 # gui.py
-from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QPushButton,
+    QLabel,
+)
+from PySide6.QtGui import QPixmap
+from PySide6.QtCore import Qt
 from board import Board
 
 
@@ -28,15 +37,27 @@ class SolutionsGUI(QMainWindow):
         self.setCentralWidget(self.central_widget)
         # ? Создание основного вертикального макета
 
-        board = Board([], Board.pick_one_solution(Board.total_solutions))
+        board = Board(
+            Board.my_positions, Board.pick_one_solution(Board.total_solutions)
+        )
 
         buttonStart = QPushButton("Вынести решение в output.txt")
         buttonStart.setStyleSheet("background-color: green; color: white;")
         buttonStart.clicked.connect(self.__onClick_on_save)
 
-        self.main_layout = QVBoxLayout()
+        self.image_label = QLabel()
+        pixmap = QPixmap("images/z.png")
+        scaled_pixmap = pixmap.scaled(
+            516, 516, Qt.KeepAspectRatio, Qt.SmoothTransformation
+        )
+        pixmap.width = 124
+        pixmap.height = 124
+        self.image_label.setPixmap(scaled_pixmap)
+
+        self.main_layout = QHBoxLayout()
         self.hbox_layout = QVBoxLayout()
 
+        self.hbox_layout.addWidget(self.image_label)
         self.hbox_layout.addWidget(buttonStart)
 
         self.main_layout.addLayout(board)

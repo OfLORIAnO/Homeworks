@@ -14,7 +14,6 @@ class Cell:
     board: "Board"
     figure: Union[Figure, None]
     __is_available: bool
-    __is_solution: bool
     __x: int
     __y: int
     __color: Color
@@ -26,7 +25,6 @@ class Cell:
         self.__y = y
         self.board = board
         self.__is_available = True
-        self.__is_solution = False
         self.is_clickable = True
         self.figure = None
         self.button = Cell_button(self.on_click)
@@ -64,15 +62,6 @@ class Cell:
     @is_available.setter
     def is_available(self, state: bool = True):
         self.__is_available = state
-        self.render()
-
-    @property
-    def is_solution(self) -> bool:
-        return self.__is_solution
-
-    @is_solution.setter
-    def is_solution(self, state: bool = True):
-        self.__is_solution = state
         self.render()
 
     def put_figure(self, is_solution: bool = False):
