@@ -50,3 +50,14 @@ def getCellColor(x: int, y: int, cell: "Cell") -> Color:
         return getInitCellColor(x, y)
 
     return Color.green
+
+
+def get_number_from_input(text: str) -> str:
+    newL = "0"
+    if (len(text) == 0) or (text == " "):
+        newL = "0"
+    elif text and (text[0]) == "0" and len(text) > 1:
+        newL = text[1:]
+    else:
+        newL = text
+    return newL.strip()

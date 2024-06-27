@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QLineEdit,
     QHBoxLayout,
+    QLabel,
     QVBoxLayout,
 )
 from board import Board
@@ -15,7 +16,6 @@ from board import Board
 class ChessGUI(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.board = Board()
         self.StartUI()
 
     def StartUI(self):
@@ -26,38 +26,32 @@ class ChessGUI(QMainWindow):
         self.setGeometry(100, 100, 800, 800)
         self.setCentralWidget(self.central_widget)
         # ? Создание основного вертикального макета
+
         self.main_layout = QVBoxLayout()
+        self.hbox_layout = QVBoxLayout()
 
-        # Board layout
-        self.board_layout = QGridLayout()
-        self.init_render()
-
-        # Создание горизонтального макета (QHBoxLayout)
-        self.hbox_layout = QHBoxLayout()
+        self.board = Board([(0, 0), (6, 7)])
 
         buttonStart = QPushButton("Найти решения")
         buttonStart.setStyleSheet("background-color: green; color: white;")
         buttonStart.clicked.connect(self.board.start_solve)
-        self.hbox_layout.addWidget(buttonStart)
 
+        L_Label = QLabel("Количество фигур, необходимое расставить")
         L_input = QLineEdit()
         L_input.setPlaceholderText("Количество фигур, необходимое расставить")
         L_input.textChanged.connect(
             lambda: self.board.change_L(L_input.text(), L_input)
         )
         L_input.setText(str(self.board.L))
+
+        self.hbox_layout.addWidget(L_Label)
         self.hbox_layout.addWidget(L_input)
+        self.hbox_layout.addWidget(buttonStart)
 
-        self.main_layout.addLayout(self.board_layout)
+        self.main_layout.addLayout(self.board)
         self.main_layout.addLayout(self.hbox_layout)
-        self.central_widget.setLayout(self.main_layout)
 
-    def init_render(self):
-        for x in range(self.board.N):
-            for y in range(self.board.N):
-                cell = self.board.get_cell(x, y)
-                if cell:
-                    self.board_layout.addWidget(cell.button, x, y)
+        self.central_widget.setLayout(self.main_layout)
 
 
 if __name__ == "__main__":

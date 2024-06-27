@@ -67,8 +67,9 @@ class Solution:
             return self.__print_solutions(self.solutions_total, init_time)
 
         # ? Запускаем шарманку
+        self.__print_board(board)
         self.__solve(board, 0, -1, self.L, N, solutions)
-        print("закончили")
+
         # ? Выводим решения
         self.__print_solutions(self.solutions_total, init_time)
 
@@ -117,7 +118,7 @@ class Solution:
         flag1, flag2, flag3, flag4 = True, True, True, True
 
         # ? Ходы слона
-        for index in range(1, N - row):
+        for index in range(1, N):
             if flag1:
                 flag1 = self.put_inaccessible(board, row + index, col + index, N)
             if flag2:

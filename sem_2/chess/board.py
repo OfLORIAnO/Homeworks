@@ -5,14 +5,19 @@ from dialog import Dialog
 from color import Color
 from typing import Union
 from my_types import solutions_type
-from PySide6.QtWidgets import QLineEdit
+from PySide6.QtWidgets import (
+    QGridLayout,
+    QLineEdit,
+)
+from utils import get_number_from_input
+
 
 Board_type = list[list[Cell]]
 Solutions_type = list[Cell]
 Total_solutions_type = list[Solutions_type]
 
 
-class Board:
+class Board(QGridLayout):
     N: int
     L: int
     board: Board_type
@@ -23,6 +28,7 @@ class Board:
         init_positions: Union[solutions_type, None] = None,
         solution: Union[solutions_type, None] = None,
     ):
+        super().__init__()
         self.Init(init_positions, solution)
 
     def Init(
@@ -36,6 +42,7 @@ class Board:
         if solution is not None:
             self.__Init_solution_Positions(solution)
         self.render()
+        self.init_render_layout()
 
     def __Init_start_Positions(self, init_positions: solutions_type):
         for position in init_positions:
@@ -60,7 +67,7 @@ class Board:
     def __Init__board(self):
         self.__total_solutions = []
         self.N = 10
-        self.L = 4
+        self.L = 2
         self.board = [[0 for _ in range(self.N)] for __ in range(self.N)]
         for x in range(self.N):
             for y in range(self.N):
@@ -152,13 +159,7 @@ class Board:
         self.render()
 
     def change_L(self, L: str, input: QLineEdit):
-        newL = L
-        if (len(L) == 0) or (L == " "):
-            print("wtf")
-            newL = "0"
-        elif L and (L[0]) == "0" and len(L) > 1:
-            newL = L[1:]
-            input.setText(newL)
+        newL = get_number_from_input(L)
         try:
             self.L = int(newL)
             input.setText(str(newL))
@@ -166,3 +167,10 @@ class Board:
             self.L = 4
             input.setText(str(self.L))
             Dialog("некорректное значение K,\nК должно быть целым числом", Color.red)
+
+    def init_render_layout(self):
+        for x in range(self.N):
+            for y in range(self.N):
+                cell = self.get_cell(x, y)
+                if cell:
+                    self.addWidget(cell.button, x, y)
