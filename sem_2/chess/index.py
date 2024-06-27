@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QApplication
 import sys
 
-from start import StartGUI
+from startGUI import StartGUI
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
