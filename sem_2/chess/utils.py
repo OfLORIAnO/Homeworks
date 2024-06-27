@@ -12,21 +12,25 @@ class Click_Type(Enum):
 
 
 text_styles = "font-size: 20px; font-weight: 700;"
+border_styles = "border: none;"
+cell_styles = text_styles + border_styles
 
 
 def getStyleOfColor(color: Color) -> str:
     if color == Color.black:
-        return "background-color: black; color: white;" + text_styles
+        return "background-color: black; color: white;" + cell_styles
     elif color == Color.white:
-        return "background-color: white; color: black;" + text_styles
+        return "background-color: white; color: black;" + cell_styles
     elif color == Color.green:
-        return "background-color: green; color: white;" + text_styles
+        return "background-color: green; color: white;" + cell_styles
     elif color == Color.red:
-        return "background-color: red; color: white;" + text_styles
+        return "background-color: red; color: white;" + cell_styles
     elif color == Color.yellow:
-        return "background-color: yellow; color: black;" + text_styles
+        return "background-color: yellow; color: black;" + cell_styles
+    elif color == Color.purple:
+        return "background-color: purple; color: white;" + cell_styles
 
-    return "background-color: white; color: black;" + text_styles
+    return "background-color: white; color: black;" + cell_styles
 
 
 def getInitCellColor(x: int, y: int) -> Color:
@@ -36,10 +40,13 @@ def getInitCellColor(x: int, y: int) -> Color:
 
 
 def getCellColor(x: int, y: int, cell: "Cell") -> Color:
-    if cell.__is_solution:
+    if cell.is_solution and not cell.figure:
+        return Color.purple
+    if cell.figure and cell.figure.is_solution:
         return Color.yellow
     if not (cell.is_available):
         return Color.red
     if not (cell.figure):
         return getInitCellColor(x, y)
+
     return Color.green

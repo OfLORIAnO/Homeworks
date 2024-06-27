@@ -18,6 +18,7 @@ class Cell:
     __x: int
     __y: int
     __color: Color
+    is_clickable: bool
     button: Cell_button
 
     def __init__(self, x: int, y: int, board: "Board"):
@@ -26,15 +27,15 @@ class Cell:
         self.board = board
         self.__is_available = True
         self.__is_solution = False
+        self.is_clickable = True
         self.figure = None
-
         self.button = Cell_button(self.on_click)
 
         self.Init()
 
     def Init(self):
         self.__color = getStyleOfColor(getCellColor(self.__x, self.__y, self))
-        self.button.setStyleSheet(self.get_color())
+        self.button.setStyleSheet(self.__color)
         self.render_symbol()
 
     def on_click(self, button_type: Click_Type):
@@ -56,24 +57,31 @@ class Cell:
         self.button.setStyleSheet(newColor)
         self.render_symbol()
 
-    def get_color(self) -> Color:
-        return self.__color
-
     @property
     def is_available(self) -> bool:
         return self.__is_available
 
     @is_available.setter
-    def is_available(self, state: bool = True, is_solution: bool = False):
+    def is_available(self, state: bool = True):
         self.__is_available = state
-        self.__is_solution = is_solution
+        self.render()
+
+    @property
+    def is_solution(self) -> bool:
+        return self.__is_solution
+
+    @is_solution.setter
+    def is_solution(self, state: bool = True):
+        self.__is_solution = state
         self.render()
 
     def put_figure(self, is_solution: bool = False):
-        if not (self.__is_available) or self.figure or is_solution:
+        if not (self.is_clickable):
+            Dialog("размещение фигур отключено", Color.red)
+        elif not (self.__is_available) or self.figure:
             Dialog("нельзя поместить фигуру", Color.red)
         else:
-            self.figure = Figure(self.__x, self.__y, self.board)
+            self.figure = Figure(self.__x, self.__y, self.board, is_solution)
 
     def remove_figure(self):
         self.figure = None

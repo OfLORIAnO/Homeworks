@@ -6,6 +6,8 @@ from PySide6.QtWidgets import (
     QWidget,
     QPushButton,
     QLineEdit,
+    QHBoxLayout,
+    QVBoxLayout,
 )
 from board import Board
 
@@ -13,45 +15,49 @@ from board import Board
 class ChessGUI(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.board = Board()
         self.StartUI()
 
     def StartUI(self):
-        # ? Layout
+        # ? Создание центрального виджета
+        self.central_widget = QWidget()
+        self.central_widget.setStyleSheet("background-color: #EEA26E")
         self.setWindowTitle("Chess")
         self.setGeometry(100, 100, 800, 800)
-        self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
-        self.grid_layout = QGridLayout()
-        self.central_widget.setLayout(self.grid_layout)
-        self.central_widget.setStyleSheet("background-color: #EEA26E")
+        # ? Создание основного вертикального макета
+        self.main_layout = QVBoxLayout()
 
-        self.board = Board()
+        # Board layout
+        self.board_layout = QGridLayout()
         self.init_render()
 
-        # ? кнопка "Найти решения"
-        self.buttonStart = QPushButton("Найти решения")
-        self.buttonStart.setStyleSheet("background-color: green; color: white;")
-        self.buttonStart.clicked.connect(self.board.start_solve)
-        self.grid_layout.addWidget(self.buttonStart, 0, 999)
+        # Создание горизонтального макета (QHBoxLayout)
+        self.hbox_layout = QHBoxLayout()
 
-        # ? Input того, сколько фигур нужно расставить
-        self.L_input = QLineEdit(self)
-        self.L_input.placeholderText = "Количество фигур, необходимое расставить"
-        self.L_input.textChanged.connect(self.board.confirm_L)
-        self.L_input.text = self.board.L
-        self.grid_layout.addWidget(self.L_input, 1, 999)
+        buttonStart = QPushButton("Найти решения")
+        buttonStart.setStyleSheet("background-color: green; color: white;")
+        buttonStart.clicked.connect(self.board.start_solve)
+        self.hbox_layout.addWidget(buttonStart)
+
+        L_input = QLineEdit()
+        L_input.setPlaceholderText("Количество фигур, необходимое расставить")
+        L_input.textChanged.connect(
+            lambda: self.board.change_L(L_input.text(), L_input)
+        )
+        L_input.setText(str(self.board.L))
+        self.hbox_layout.addWidget(L_input)
+
+        self.main_layout.addLayout(self.board_layout)
+        self.main_layout.addLayout(self.hbox_layout)
+        self.central_widget.setLayout(self.main_layout)
 
     def init_render(self):
         for x in range(self.board.N):
             for y in range(self.board.N):
                 cell = self.board.get_cell(x, y)
                 if cell:
-                    self.grid_layout.addWidget(cell.button, x, y)
-
-    def render(self):
-        for x in range(self.board.N):
-            for y in range(self.board.N):
-                self.board.get_cell(x, y).render()
+                    self.board_layout.addWidget(cell.button, x, y)
 
 
 if __name__ == "__main__":

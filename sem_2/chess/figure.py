@@ -7,13 +7,14 @@ if TYPE_CHECKING:
 class Figure:
     x: int
     y: int
+    is_solution: bool
     board: "Board"
 
-    def __init__(self, x: int, y: int, board: "Board"):
+    def __init__(self, x: int, y: int, board: "Board", is_solution: bool = False):
         super().__init__()
         self.x = x
         self.y = y
-
+        self.is_solution = is_solution
         self.board = board
 
     def getMoves(

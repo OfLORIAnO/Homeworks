@@ -5,6 +5,7 @@ from dialog import Dialog
 from color import Color
 from typing import Union
 from my_types import solutions_type
+from PySide6.QtWidgets import QLineEdit
 
 Board_type = list[list[Cell]]
 Solutions_type = list[Cell]
@@ -16,10 +17,6 @@ class Board:
     L: int
     board: Board_type
     solutions: Solutions_type
-
-    def Init_from_solutions(self):
-        if not (len(self.__total_solutions)):
-            return
 
     def __init__(
         self,
@@ -52,7 +49,13 @@ class Board:
             x, y = position
             cell = self.get_cell(x, y)
             if cell:
-                cell.put_figure()
+                cell.is_solution = True
+                cell.put_figure(True)
+        for x in range(self.N):
+            for y in range(self.N):
+                cell = self.get_cell(x, y)
+                if cell:
+                    cell.is_clickable = False
 
     def __Init__board(self):
         self.__total_solutions = []
@@ -84,6 +87,7 @@ class Board:
                 cell = self.get_cell(x, y)
                 if cell:
                     cell.is_available = True
+                    cell.is_solution = False
 
     def __put_all_unavailable_cells(self):
         N = self.N
@@ -96,9 +100,15 @@ class Board:
                     moves = cell.figure.getMoves()
                     for move in moves:
                         [x, y] = move
-                        unavailable_cell = self.get_cell(x, y)
-                        if unavailable_cell:
-                            unavailable_cell.is_available = False
+                        move_cell = self.get_cell(x, y)
+                        if move_cell:
+                            if cell.figure.is_solution:
+                                move_cell.is_available = False
+                                move_cell.is_solution = True
+                            else:
+                                move_cell.is_solution = False
+                                move_cell.is_available = False
+
                 else:
                     cell.Init()
 
@@ -126,7 +136,6 @@ class Board:
                 cell = self.get_cell(x, y)
                 if cell and cell.figure:
                     init_positions.append([x, y])
-        print("init_positions", init_positions)
         return init_positions
 
     def start_solve(self):
@@ -135,7 +144,6 @@ class Board:
             self.N, self.L, len(init_positions), init_positions
         )
         self.__total_solutions = solutions
-        print(solutions)
 
         if len(self.__total_solutions) == 0:
             Dialog("решений не найдено", Color.red)
@@ -143,8 +151,18 @@ class Board:
 
         self.render()
 
-    def confirm_L(self, L: str):
+    def change_L(self, L: str, input: QLineEdit):
+        newL = L
+        if (len(L) == 0) or (L == " "):
+            print("wtf")
+            newL = "0"
+        elif L and (L[0]) == "0" and len(L) > 1:
+            newL = L[1:]
+            input.setText(newL)
         try:
-            self.L = int(L)
+            self.L = int(newL)
+            input.setText(str(newL))
         except:
+            self.L = 4
+            input.setText(str(self.L))
             Dialog("некорректное значение K,\nК должно быть целым числом", Color.red)

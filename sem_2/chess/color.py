@@ -7,6 +7,7 @@ class Color(Enum):
     green = "green"
     red = "red"
     yellow = "yellow"
+    purple = "purple"
 
 
 def get_color(color: Color) -> str:
@@ -20,4 +21,6 @@ def get_color(color: Color) -> str:
         return "red"
     elif color == Color.yellow:
         return "yellow"
+    elif color == Color.purple:
+        return "purple"
     return "white"
