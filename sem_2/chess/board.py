@@ -44,14 +44,14 @@ class Board(QGridLayout):
             self.__Init_start_Positions(init_positions)
         if solution is not None:
             self.__Init_solution_Positions(solution)
-        self._render()
-        self.__init__render_layout()
+        self.render()
+        self.__init_render_layout()
 
     def __Init_start_Positions(self, init_positions: solutions_type):
         # Установка начальных позиций фигур
         for position in init_positions:
             x, y = position
-            cell = self._get_cell(x, y)
+            cell = self.get_cell(x, y)
             if cell:
                 cell.put_figure()
 
@@ -59,13 +59,13 @@ class Board(QGridLayout):
         # Установка позиций для отображения решения
         for position in solution:
             x, y = position
-            cell = self._get_cell(x, y)
+            cell = self.get_cell(x, y)
             if cell:
                 cell.put_figure(True)
         # Отключение возможности клика на клетках после отображения решения
         for x in range(self.N):
             for y in range(self.N):
-                cell = self._get_cell(x, y)
+                cell = self.get_cell(x, y)
                 if cell:
                     cell.is_clickable = False
 
@@ -79,15 +79,15 @@ class Board(QGridLayout):
                 cell = Cell(x, y, self)
                 self.board[x][y] = cell
 
-    def __init__render_layout(self):
+    def __init_render_layout(self):
         # Инициализация и отрисовка раскладки доски
         for x in range(self.N):
             for y in range(self.N):
-                cell = self._get_cell(x, y)
+                cell = self.get_cell(x, y)
                 if cell:
                     self.addWidget(cell.button, x, y)
 
-    def _get_cell(
+    def get_cell(
         self, x: int, y: int, board: Union[Board_type, None] = None
     ) -> Union[Cell, None]:
         # Получение клетки по координатам
@@ -97,17 +97,17 @@ class Board(QGridLayout):
         except:
             return None
 
-    def _render(self):
+    def render(self):
         # Полная отрисовка доски
         self.__reset_all_available()
         self.__put_all_unavailable_cells()
-        self.___render_cells()
+        self.__render_cells()
 
     def __reset_all_available(self):
         # Сброс доступности всех клеток
         for x in range(self.N):
             for y in range(self.N):
-                cell = self._get_cell(x, y)
+                cell = self.get_cell(x, y)
                 if cell:
                     cell.is_available = True
 
@@ -116,26 +116,26 @@ class Board(QGridLayout):
         N = self.N
         for x in range(N):
             for y in range(N):
-                cell = self._get_cell(x, y)
+                cell = self.get_cell(x, y)
                 # Если клетка занята фигурой, обновляем ее ходы
                 if cell and cell.figure:
                     moves = cell.figure.getMoves()
                     for move in moves:
                         move_x, move_y = move
-                        move_cell = self._get_cell(move_x, move_y)
+                        move_cell = self.get_cell(move_x, move_y)
                         if move_cell:
                             move_cell.is_available = False
                 else:
                     cell.Init()
 
-    def ___render_cells(self) -> None:
+    def __render_cells(self) -> None:
         # Отрисовка всех клеток
         N = self.N
         for x in range(N):
             for y in range(N):
-                cell = self._get_cell(x, y)
+                cell = self.get_cell(x, y)
                 if cell:
-                    cell._render()
+                    cell.render()
 
     def _validate_position(self, x: int, y: int) -> bool:
         # Проверка валидности координат клетки
@@ -158,7 +158,7 @@ class Board(QGridLayout):
         my_positions = []
         for x in range(self.N):
             for y in range(self.N):
-                cell = self._get_cell(x, y)
+                cell = self.get_cell(x, y)
                 if cell and cell.figure and not (cell.figure.is_solution):
                     my_positions.append((x, y))
         Board.my_positions = my_positions
@@ -168,7 +168,7 @@ class Board(QGridLayout):
         init_positions = []
         for x in range(self.N):
             for y in range(self.N):
-                cell = self._get_cell(x, y)
+                cell = self.get_cell(x, y)
                 if cell and cell.figure:
                     init_positions.append([x, y])
         return init_positions

@@ -39,7 +39,7 @@ class Cell:
         # Инициализация цвета клетки и символа на кнопке
         self.__color = getStyleOfColor(getCellColor(self.__x, self.__y, self))
         self.button.setStyleSheet(self.__color)
-        self._render_symbol()
+        self.render_symbol()
 
     def on_click(self, button_type: Click_Type):
         # Обработчик кликов по кнопке
@@ -48,20 +48,20 @@ class Cell:
         else:
             self.remove_figure()  # Правый клик - удаление фигуры
 
-        self.board._render()  # Перерисовка доски
+        self.board.render()  # Перерисовка доски
 
-    def _render_symbol(self):
+    def render_symbol(self):
         # Отображение символа на кнопке в зависимости от наличия фигуры
         if not (self.figure):
             self.button.setText(" ")
         else:
             self.button.setText("X")
 
-    def _render(self):
+    def render(self):
         # Обновление цвета и символа на кнопке
         newColor = getStyleOfColor(getCellColor(self.__x, self.__y, self))
         self.button.setStyleSheet(newColor)
-        self._render_symbol()
+        self.render_symbol()
 
     @property
     def is_available(self) -> bool:
@@ -72,7 +72,7 @@ class Cell:
     def is_available(self, state: bool = True):
         # Сеттер для доступности клетки с перерисовкой
         self.__is_available = state
-        self._render()
+        self.render()
 
     def put_figure(self, is_solution: bool = False):
         # Размещение фигуры на клетке
