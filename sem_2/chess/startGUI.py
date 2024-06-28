@@ -3,7 +3,6 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
     QPushButton,
-    QLineEdit,
     QLabel,
     QVBoxLayout,
     QHBoxLayout,
@@ -12,6 +11,7 @@ from board import Board
 from solutionGUI import SolutionsGUI
 from dialog import Dialog
 from color import Color
+from input import Input
 
 
 class StartGUI(QMainWindow):
@@ -28,6 +28,7 @@ class StartGUI(QMainWindow):
             return
 
         self.new_window = SolutionsGUI()
+        Dialog("количество решений:" + str(len(Board.total_solutions)), Color.green)
         self.close()
         self.new_window.show()
 
@@ -49,7 +50,7 @@ class StartGUI(QMainWindow):
         buttonStart.clicked.connect(self.__on_click_on_solve)
 
         L_Label = QLabel("Количество фигур, необходимое расставить")
-        L_input = QLineEdit()
+        L_input = Input()
         L_input.setPlaceholderText("Количество фигур, необходимое расставить")
         L_input.textChanged.connect(
             lambda: self.board.change_L(L_input.text(), L_input)
