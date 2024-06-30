@@ -20,8 +20,7 @@ Total_solutions_type = list[Solutions_type]
 
 # Класс доски, наследующий QGridLayout
 class Board(QGridLayout):
-    N: int  # Размер доски
-    L: int  # Количество фигур для размещения
+    N: int = 10  # Размер доски
     my_positions: solutions_type  # Позиции фигур, размещенных пользователем
     total_solutions: Total_solutions_type = list()  # Все возможные решения
 
@@ -70,8 +69,7 @@ class Board(QGridLayout):
                     cell.is_clickable = False
 
     def __Init__board(self):
-        # Инициализация доски с заданным размером
-        self.N = 10
+        # Инициализация доски
         self.L = 2
         self.board = [[0 for _ in range(self.N)] for __ in range(self.N)]
         for x in range(self.N):

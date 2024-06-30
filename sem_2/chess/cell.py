@@ -13,23 +13,14 @@ if TYPE_CHECKING:
 
 # Класс клетки доски
 class Cell:
-    board: "Board"  # Ссылка на объект доски
-    figure: Union[Figure, None]  # Фигура, расположенная на клетке, или None
-    __is_available: bool  # Доступность клетки для размещения фигуры
-    __x: int  # Координата X клетки
-    __y: int  # Координата Y клетки
-    __color: Color  # Цвет клетки
-    is_clickable: bool  # Возможность клика по клетке
-    button: Cell_button  # Кнопка, связанная с клеткой
-
     def __init__(self, x: int, y: int, board: "Board"):
-        self.__x = x
-        self.__y = y
-        self.board = board
-        self.__is_available = True
-        self.is_clickable = True
-        self.figure = None
-        self.button = Cell_button(
+        self.__x: int = x
+        self.__y: int = y
+        self.board: "Board" = board
+        self.__is_available: bool = True
+        self.is_clickable: bool = True
+        self.figure: Union[Figure, None] = None
+        self.button: Cell_button = Cell_button(
             self.on_click
         )  # Инициализация кнопки с обработчиком кликов
 

@@ -7,11 +7,6 @@ if TYPE_CHECKING:
 
 # Класс фигуры
 class Figure:
-    x: int  # Координата X фигуры
-    y: int  # Координата Y фигуры
-    is_solution: bool  # Является ли фигура частью решения
-    board: "Board"  # Ссылка на объект доски
-
     def __init__(self, x: int, y: int, board: "Board", is_solution: bool = False):
         super().__init__()
         self.x = x  # Установка координаты X

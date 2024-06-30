@@ -8,7 +8,6 @@ from utils import Click_Type
 
 # Класс кнопки клетки
 class Cell_button(QPushButton):
-    click_callback: Callable  # Коллбэк для обработки кликов
 
     def __init__(self, click_callback: Callable[[Click_Type], None]):
         super().__init__()
