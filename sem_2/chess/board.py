@@ -37,7 +37,7 @@ class Board(QGridLayout):
         init_positions: Union[solutions_type, None] = None,
         solution: Union[solutions_type, None] = None,
     ):
-        # Инициализация доски и размещение начальных позиций
+        """Инициализация доски с начальными позициями и решением."""
         self.__Init__board()
         if init_positions is not None:
             self.__Init_start_Positions(init_positions)
@@ -47,7 +47,11 @@ class Board(QGridLayout):
         self.__init_render_layout()
 
     def __Init_start_Positions(self, init_positions: solutions_type):
-        # Установка начальных позиций фигур
+        """Установка начальных позиций фигур.
+
+        Параметры:
+        - init_positions (solutions_type): Список начальных позиций фигур на доске.
+        """
         for position in init_positions:
             x, y = position
             cell = self.get_cell(x, y)
@@ -55,7 +59,11 @@ class Board(QGridLayout):
                 cell.put_figure()
 
     def __Init_solution_Positions(self, solution: solutions_type):
-        # Установка позиций для отображения решения
+        """Установка позиций для отображения решения.
+
+        Параметры:
+        - solution (solutions_type): Список позиций для отображения решения на доске.
+        """
         for position in solution:
             x, y = position
             cell = self.get_cell(x, y)
@@ -69,7 +77,7 @@ class Board(QGridLayout):
                     cell.is_clickable = False
 
     def __Init__board(self):
-        # Инициализация доски
+        """Инициализация шахматной доски."""
         self.L = 2
         self.board = [[0 for _ in range(self.N)] for __ in range(self.N)]
         for x in range(self.N):
@@ -78,7 +86,7 @@ class Board(QGridLayout):
                 self.board[x][y] = cell
 
     def __init_render_layout(self):
-        # Инициализация и отрисовка раскладки доски
+        """Инициализация и отрисовка раскладки доски."""
         for x in range(self.N):
             for y in range(self.N):
                 cell = self.get_cell(x, y)
@@ -88,7 +96,16 @@ class Board(QGridLayout):
     def get_cell(
         self, x: int, y: int, board: Union[Board_type, None] = None
     ) -> Union[Cell, None]:
-        # Получение клетки по координатам
+        """Получение клетки по координатам.
+
+        Параметры:
+        - x (int): Координата по горизонтали.
+        - y (int): Координата по вертикали.
+        - board (Union[Board_type, None]): Доска, на которой производится поиск клетки.
+
+        Возвращаемое значение:
+        - Union[Cell, None]: Объект клетки (Cell) или None, если клетка не найдена.
+        """
         current_board = board if board is not None else self.board
         try:
             return current_board[x][y]
@@ -96,13 +113,13 @@ class Board(QGridLayout):
             return None
 
     def render(self):
-        # Полная отрисовка доски
+        """Полная отрисовка доски. Капитальная такая"""
         self.__reset_all_available()
         self.__put_all_unavailable_cells()
         self.__render_cells()
 
     def __reset_all_available(self):
-        # Сброс доступности всех клеток
+        """Сброс доступности всех клеток."""
         for x in range(self.N):
             for y in range(self.N):
                 cell = self.get_cell(x, y)
@@ -110,7 +127,7 @@ class Board(QGridLayout):
                     cell.is_available = True
 
     def __put_all_unavailable_cells(self):
-        # Обновление состояния всех клеток
+        """Обновление состояния всех клеток."""
         N = self.N
         for x in range(N):
             for y in range(N):
@@ -127,7 +144,7 @@ class Board(QGridLayout):
                     cell.Init()
 
     def __render_cells(self) -> None:
-        # Отрисовка всех клеток
+        """Отрисовка всех клеток."""
         N = self.N
         for x in range(N):
             for y in range(N):
@@ -136,13 +153,28 @@ class Board(QGridLayout):
                     cell.render()
 
     def _validate_position(self, x: int, y: int) -> bool:
-        # Проверка валидности координат клетки
+        """Проверка валидности координат клетки.
+
+        Параметры:
+        - x (int): Координата по горизонтали.
+        - y (int): Координата по вертикали.
+
+        Возвращаемое значение:
+        - bool: True, если координаты являются валидными для клетки на доске, False в противном случае.
+        """
         N: int = self.N
         return 0 <= x < N and 0 <= y < N
 
     @staticmethod
     def pick_one_solution(solutions: total_solutions_type) -> solutions_type:
-        # Выбор одного решения из списка решений
+        """Выбор одного решения из списка решений.
+
+        Параметры:
+        - solutions (total_solutions_type): Список всех возможных решений.
+
+        Возвращаемое значение:
+        - solutions_type: Список позиций для отображения одного выбранного решения.
+        """
         if len(solutions) == 0:
             return []
         positions_without_my = list()
@@ -152,7 +184,7 @@ class Board(QGridLayout):
         return positions_without_my
 
     def __put_my_positions(self):
-        # Установка позиций фигур, размещенных пользователем
+        """Установка позиций фигур, размещенных пользователем."""
         my_positions = []
         for x in range(self.N):
             for y in range(self.N):
@@ -162,7 +194,11 @@ class Board(QGridLayout):
         Board.my_positions = my_positions
 
     def __get_init_positions_for_solving(self):
-        # Получение начальных позиций фигур для решения задачи
+        """Получение начальных позиций фигур для решения задачи.
+
+        Возвращаемое значение:
+        - solutions_type: Список начальных позиций фигур на доске.
+        """
         init_positions = []
         for x in range(self.N):
             for y in range(self.N):
@@ -172,7 +208,7 @@ class Board(QGridLayout):
         return init_positions
 
     def start_solve(self):
-        # Начало процесса решения задачи
+        """Начало процесса решения задачи."""
         init_positions = self.__get_init_positions_for_solving()
         solutions = Solution.get_solutions(
             self.N, self.L, len(init_positions), init_positions
@@ -181,7 +217,12 @@ class Board(QGridLayout):
         self.__put_my_positions()
 
     def change_L(self, L: str, input: QLineEdit):
-        # Изменение значения L (количество фигур)
+        """Изменение значения L (количество фигур).
+
+        Параметры:
+        - L (str): Значение L, вводимое пользователем.
+        - input (QLineEdit): Виджет текстового поля для ввода значения L.
+        """
         newL = get_number_from_input(L)
         try:
             self.L = int(newL)

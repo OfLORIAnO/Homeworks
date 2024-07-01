@@ -10,6 +10,11 @@ from utils import Click_Type
 class Cell_button(QPushButton):
 
     def __init__(self, click_callback: Callable[[Click_Type], None]):
+        """Инициализация кнопки клетки.
+
+        Параметры:
+        - click_callback (Callable[[Click_Type], None]): Функция обратного вызова, которая будет вызываться при клике на кнопку.
+        """
         super().__init__()
 
         # Установка фиксированного размера кнопки
@@ -17,7 +22,11 @@ class Cell_button(QPushButton):
         self.click_callback = click_callback  # Установка коллбэка для кликов
 
     def mousePressEvent(self, event: QMouseEvent):
-        # Переопределение метода для обработки событий нажатия мыши
+        """Обработка события нажатия кнопки мыши.
+
+        Параметры:
+        - event (QMouseEvent): Объект события нажатия кнопки мыши.
+        """
         if event.button() == Qt.LeftButton:
             # Обработка левого клика мыши
             self.click_callback(Click_Type.left)

@@ -11,13 +11,27 @@ class Dialog(QDialog):
     def __init__(
         self, text: str, text_color: Color, on_click: Union[Callable, None] = None
     ):
+        """
+        Инициализация диалогового окна.
+
+        Параметры:
+        - text (str): Текст, отображаемый в диалоговом окне.
+        - text_color (Color): Цвет текста в диалоговом окне.
+        - on_click (Union[Callable, None], optional): Функция обратного вызова, вызываемая при клике на кнопку OK. По умолчанию None.
+        """
         super().__init__()
         self.__on_click = on_click  # Установка коллбэка для кликов
         self.initUI(text, text_color)  # Инициализация интерфейса пользователя
         self.exec()  # Отображение диалогового окна
 
     def initUI(self, text: str, text_color: Color):
-        # Инициализация пользовательского интерфейса
+        """
+        Инициализация пользовательского интерфейса диалогового окна.
+
+        Параметры:
+        - text (str): Текст, отображаемый в диалоговом окне.
+        - text_color (Color): Цвет текста в диалоговом окне.
+        """
         self.setWindowTitle("Dialog")
         self.setFixedSize(300, 150)  # Установка фиксированного размера окна
 
@@ -42,6 +56,12 @@ class Dialog(QDialog):
         self.setLayout(layout)  # Установка макета окна
 
     def __on_click_function(self):
+        """
+        Обработка клика по кнопке OK.
+
+        Вызывает установленную функцию обратного вызова (__on_click), если она установлена.
+        Затем закрывает диалоговое окно.
+        """
         # Обработка клика по кнопке OK
         if self.__on_click:
             self.__on_click()  # Вызов коллбэка, если он установлен
